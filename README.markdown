@@ -12,7 +12,7 @@ file permissions (which is expected). It was meant to be a class that you could
 quickly include into a project and have working right away.
 
 The class was written in 2008, but I have since received a number of emails both
-say 'thanks' and asking me to add features.
+saying 'thanks' and asking me to add features.
 
 This github project will host the development of the next version of KLogger.
 The original version of KLogger is tagged as version 0.1, and is available for
@@ -23,19 +23,19 @@ download [here](http://github.com/katzgrau/KLogger/downloads).
 KLogger's API will change for the better for it's 1.0 release. Expected changes
 include:
 
-    * Adherence to the Zend Coding Standards for PHP (right now, KLogger has a
-      .NET-ish member and method naming convention). The names of private
-      methods will be prefixed with '_' and camel-cased, for example.
-    * The implementation of a singleton pattern. A logger is likely needed in
-      many parts of an application — there should be no need to instantiate
-      multiple instances. You'll probably see: `$log = KLogger::instance();` in
-      the near future.
-    * Implementation of rolling log files. I've debated whether log files should
-      based on simply the date, or both the date size of the log file. I'm
-      thinking just the date will be sufficient to start.
-    * Put KLogger under a specific license (which will happen below)
-    * Have a bit more encapsulation of class members (and erase my cheeky
-      comments about not having encapsulation)
+ * Adherence to the Zend Coding Standards for PHP (right now, KLogger has a
+   .NET-ish member and method naming convention). The names of private
+   methods will be prefixed with '_' and camel-cased, for example.
+ * The implementation of a singleton pattern. A logger is likely needed in
+   many parts of an application — there should be no need to instantiate
+   multiple instances. You'll probably see: `$log = KLogger::instance();` in
+   the near future.
+ * Implementation of rolling log files. I've debated whether log files should
+   based on simply the date, or both the date size of the log file. I'm
+   thinking just the date will be sufficient to start.
+ * Put KLogger under a specific license (which will happen below)
+ * Have a bit more encapsulation of class members (and erase my cheeky
+  comments about not having encapsulation)
 
 ## Why use KLogger?
 
@@ -55,6 +55,8 @@ Klogger has been used in projects at:
 Additionally, it's been used in numerous projects, both commercial and personal.
 
 ## License
+
+The MIT License
 
 Copyright (c) 2008-2010 Kenny Katzgrau <katzgrau@gmail.com>
 
