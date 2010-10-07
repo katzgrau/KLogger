@@ -153,12 +153,10 @@ class KLogger
             mkdir($logDirectory, self::$_defaultPermissions, true);
         }
 
-        if (file_exists($this->_logFile)) {
-            if (!is_writable($this->_logFile)) {
-                $this->_logStatus = self::OPEN_FAILED;
-                $this->_messageQueue[] = $this->_messages['writefail'];
-                return;
-            }
+        if (file_exists($this->_logFile) && !is_writable($this->_logFile)) {
+            $this->_logStatus = self::OPEN_FAILED;
+            $this->_messageQueue[] = $this->_messages['writefail'];
+            return;
         }
 
         if (($this->_fileHandle = fopen($this->_logFile, "a"))) {
