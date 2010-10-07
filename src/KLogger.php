@@ -65,6 +65,17 @@ class KLogger
     private $_fileHandle   = null;
 
     /**
+     * Standard messages produced by the class. Can be modified for il8n
+     * @var array
+     */
+    private $_messages = array(
+        //'writefail'   => 'The file exists, but could not be opened for writing. Check that appropriate permissions have been set.',
+        'writefail'   => 'The file could not be written to. Check that appropriate permissions have been set.',
+        'opensuccess' => 'The log file was opened successfully.',
+        'openfail'    => 'The file could not be opened. Check permissions.',
+    );
+
+    /**
      * Default priority of log messages, if not specified
      * @var integer
      */
@@ -145,17 +156,17 @@ class KLogger
         if (file_exists($this->_logFile)) {
             if (!is_writable($this->_logFile)) {
                 $this->_logStatus = self::OPEN_FAILED;
-                $this->_messageQueue[] = "The file exists, but could not be opened for writing. Check that appropriate permissions have been set.";
+                $this->_messageQueue[] = $this->_messages['writefail'];
                 return;
             }
         }
 
         if (($this->_fileHandle = fopen($this->_logFile, "a"))) {
             $this->_logStatus = self::LOG_OPEN;
-            $this->_messageQueue[] = "The log file was opened successfully.";
+            $this->_messageQueue[] = $this->_messages['opensuccess'];
         } else {
             $this->_logStatus = self::OPEN_FAILED;
-            $this->_messageQueue[] = "The file could not be opened. Check permissions.";
+            $this->_messageQueue[] = $this->_messages['openfail'];
         }
     }
 
@@ -249,7 +260,7 @@ class KLogger
         if ($this->_logStatus == self::LOG_OPEN
             && $this->_priority != self::OFF) {
             if (fwrite($this->_fileHandle, $line) === false) {
-                $this->_messageQueue[] = "The file could not be written to. Check that appropriate permissions have been set.";
+                $this->_messageQueue[] = $this->_messages['writefail'];
             }
         }
     }
