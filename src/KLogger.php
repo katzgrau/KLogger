@@ -1,53 +1,53 @@
 <?php
-    /**
-     * Finally, a light, permissions-checking logging class.
-     *
-     * Author    : Kenny Katzgrau <katzgrau@gmail.com>
-     * Date      : July 26, 2008
-     * Comments  : Originally written for use with wpSearch
-     * Website   : http://codefury.net
-     * Version   : 1.0
-     *
-     * Usage:
-     *        $log = new KLogger ( "log.txt" , KLogger::INFO );
-     *        $log->_logInfo("Returned a million search results");    //Prints to the log file
-     *        $log->_logFatal("Oh dear.");  //Prints to the log file
-     *        $log->_logDebug("x = 5");     //Prints nothing due to priority setting
-     */
+/**
+* Finally, a light, permissions-checking logging class.
+*
+* Author : Kenny Katzgrau <katzgrau@gmail.com>
+* Date : July 26, 2008
+* Comments : Originally written for use with wpSearch
+* Website : http://codefury.net
+* Version : 1.0
+*
+* Usage:
+* $log = new KLogger ( "log.txt" , KLogger::INFO );
+* $log->_logInfo("Returned a million search results"); //Prints to the log file
+* $log->_logFatal("Oh dear."); //Prints to the log file
+* $log->_logDebug("x = 5"); //Prints nothing due to priority setting
+*/
 
-    /**
-     * Class documentation
-     */
+/**
+* Class documentation
+*/
     class KLogger
     {
 
-        const DEBUG     = 1;    // Most Verbose
-        const INFO      = 2;    // ...
-        const WARN      = 3;    // ...
-        const ERROR     = 4;    // ...
-        const FATAL     = 5;    // Least Verbose
-        const OFF       = 6;    // Nothing at all.
+        const DEBUG = 1; // Most Verbose
+        const INFO = 2; // ...
+        const WARN = 3; // ...
+        const ERROR = 4; // ...
+        const FATAL = 5; // Least Verbose
+        const OFF = 6; // Nothing at all.
 
-        const LOG_OPEN    = 1;
+        const LOG_OPEN = 1;
         const OPEN_FAILED = 2;
-        const LOG_CLOSED  = 3;
+        const LOG_CLOSED = 3;
 
         /* Public members: Not so much of an example of encapsulation, but that's okay. */
-        private $_logStatus         = self::LOG_CLOSED;
-        private static $_defaultPriority   = self::DEBUG;
-        private static $_dateFormat        = "Y-m-d G:i:s";
+        private $_logStatus = self::LOG_CLOSED;
+        private static $_defaultPriority = self::DEBUG;
+        private static $_dateFormat = "Y-m-d G:i:s";
         private static $_defaultPermissions= 0777;
-        private $_messageQueue      = array();
-        private $_logFile           = NULL;
-        private $_priority          = self::INFO;
-        private $_fileHandle        = NULL;
+        private $_messageQueue = array();
+        private $_logFile = NULL;
+        private $_priority = self::INFO;
+        private $_fileHandle = NULL;
 
         private static $instances = array();
 
         public static function instance($logDirectory = FALSE, $priority = FALSE)
         {
             if($priority === FALSE) $priority = self::$_defaultPriority;
-            
+
             if($logDirectory === FALSE)
             {
                 if(count(self::$instances) > 0)
@@ -55,7 +55,7 @@
                 else
                     $logDirectory = dirname(__FILE__);
             }
-            
+
             if(in_array($logDirectory, self::$instances))
             {
                 return self::$instances[$logDirectory];
@@ -72,12 +72,12 @@
 
             if($priority == self::OFF) return;
 
-            $this->_logFile  = $logDirectory 
+            $this->_logFile = $logDirectory
                                . DIRECTORY_SEPARATOR
                                . 'log_'
                                . date('Y-m-d')
                                . '.txt';
-            
+
             $this->_priority = $priority;
             if(!file_exists($logDirectory))
             {
@@ -88,7 +88,7 @@
             {
                 if (!is_writable($this->_logFile))
                 {
-                    $this->_logStatus      = self::OPEN_FAILED;
+                    $this->_logStatus = self::OPEN_FAILED;
                     $this->_messageQueue[] = "The file exists, but could not be opened for writing. Check that appropriate permissions have been set.";
                     return;
                 }
@@ -96,12 +96,12 @@
 
             if(($this->_fileHandle = fopen($this->_logFile, "a" )))
             {
-                $this->_logStatus      = self::LOG_OPEN;
+                $this->_logStatus = self::LOG_OPEN;
                 $this->_messageQueue[] = "The log file was opened successfully.";
             }
             else
             {
-                $this->_logStatus      = self::OPEN_FAILED;
+                $this->_logStatus = self::OPEN_FAILED;
                 $this->_messageQueue[] = "The file could not be opened. Check permissions.";
             }
         }
@@ -165,9 +165,9 @@
             switch($level)
             {
                 case self::INFO:
-                    return "$time - INFO  -->";
+                    return "$time - INFO -->";
                 case self::WARN:
-                    return "$time - WARN  -->";
+                    return "$time - WARN -->";
                 case self::DEBUG:
                     return "$time - DEBUG -->";
                 case self::ERROR:
@@ -175,7 +175,7 @@
                 case self::FATAL:
                     return "$time - FATAL -->";
                 default:
-                    return "$time - LOG   -->";
+                    return "$time - LOG -->";
             }
         }
 
