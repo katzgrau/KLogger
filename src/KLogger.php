@@ -43,6 +43,14 @@ class KLogger
     private static $_defaultPermissions = 0777;
     private static $instances           = array();
 
+    /**
+     * Partially implements the Singleton pattern. Each $logDirectory gets one
+     * instance.
+     *
+     * @param string  $logDirectory File path to the logging directory
+     * @param integer $priority     One of the pre-defined priority constants
+     * @return KLogger
+     */
     public static function instance($logDirectory = false, $priority = false)
     {
         if ($priority === false) {
@@ -66,6 +74,13 @@ class KLogger
         return self::$instances[$logDirectory];
     }
 
+    /**
+     * Class constructor
+     *
+     * @param string  $logDirectory File path to the logging directory
+     * @param integer $priority     One of the pre-defined priority constants
+     * @return void
+     */
     public function __construct($logDirectory, $priority)
     {
         $logDirectory = rtrim($logDirectory, '/');
@@ -102,6 +117,9 @@ class KLogger
         }
     }
 
+    /**
+     * Class destructor
+     */
     public function __destruct()
     {
         if ($this->_fileHandle) {
@@ -109,31 +127,67 @@ class KLogger
         }
     }
 
+    /**
+     * Writes a $line to the log with a priority level of INFO
+     *
+     * @param string $line Information to log
+     * @return void
+     */
     public function logInfo($line)
     {
         $this->log($line, self::INFO);
     }
 
+    /**
+     * Writes a $line to the log with a priority level of DEBUG
+     *
+     * @param string $line Information to log
+     * @return void
+     */
     public function logDebug($line)
     {
         $this->log($line, self::DEBUG);
     }
 
+    /**
+     * Writes a $line to the log with a priority level of WARN
+     *
+     * @param string $line Information to log
+     * @return void
+     */
     public function logWarn($line)
     {
         $this->log($line, self::WARN);
     }
 
+    /**
+     * Writes a $line to the log with a priority level of ERROR
+     *
+     * @param string $line Information to log
+     * @return void
+     */
     public function logError($line)
     {
         $this->log($line, self::ERROR);
     }
 
+    /**
+     * Writes a $line to the log with a priority level of FATAL
+     *
+     * @param string $line Information to log
+     * @return void
+     */
     public function logFatal($line)
     {
-        $this->log($line, KLogger::FATAL);
+        $this->log($line, self::FATAL);
     }
 
+    /**
+     * Writes a $line to the log with the given priority
+     *
+     * @param string  $line     Text to add to the log
+     * @param integer $priority Priority level of log message (use constants)
+     */
     public function log($line, $priority)
     {
         if ($this->_priority <= $priority) {
@@ -142,6 +196,12 @@ class KLogger
         }
     }
 
+    /**
+     * Writes a line to the log without prepending a status or timestamp
+     *
+     * @param string $line Line to write to the log
+     * @return void
+     */
     public function writeFreeFormLine($line)
     {
         if ($this->_logStatus == self::LOG_OPEN
