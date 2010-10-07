@@ -32,13 +32,12 @@ class KLogger
     const OPEN_FAILED = 2;
     const LOG_CLOSED  = 3;
 
-    /* Public members: Not so much of an example of encapsulation, but that's okay. */
-
     private $_logStatus    = self::LOG_CLOSED;
     private $_messageQueue = array();
     private $_logFile      = null;
     private $_priority     = self::INFO;
     private $_fileHandle   = null;
+
     private static $_defaultPriority    = self::DEBUG;
     private static $_dateFormat         = "Y-m-d G:i:s";
     private static $_defaultPermissions = 0777;
