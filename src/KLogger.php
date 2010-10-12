@@ -179,6 +179,33 @@ class KLogger
     }
 
     /**
+     * Returns (and removes) the last message from the queue.
+     * @return string
+     */
+    public function getMessage()
+    {
+        return array_pop($this->_messageQueue);
+    }
+
+    /**
+     * Returns the entire message queue (leaving it intact)
+     * @return array
+     */
+    public function getMessages()
+    {
+        return $this->_messageQueue;
+    }
+
+    /**
+     * Empties the message queue
+     * @return void
+     */
+    public function clearMessages()
+    {
+        $this->_messageQueue = array();
+    }
+
+    /**
      * Writes a $line to the log with a priority level of INFO
      *
      * @param string $line Information to log
