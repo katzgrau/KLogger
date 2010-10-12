@@ -57,7 +57,7 @@ class KLogger
      * Current minimum logging threshold
      * @var integer
      */
-    private $_severity     = self::INFO;
+    private $_severityThreshold = self::INFO;
     /**
      * This holds the file handle for this instance's log file
      * @var resource
@@ -148,7 +148,7 @@ class KLogger
             . date('Y-m-d')
             . '.txt';
 
-        $this->_severity = $severity;
+        $this->_severityThreshold = $severity;
         if (!file_exists($logDirectory)) {
             mkdir($logDirectory, self::$_defaultPermissions, true);
         }
@@ -268,7 +268,7 @@ class KLogger
      */
     public function log($line, $severity)
     {
-        if ($this->_severity <= $severity) {
+        if ($this->_severityThreshold <= $severity) {
             $status = $this->_getTimeLine($severity);
             $this->writeFreeFormLine("$status $line \n");
         }
@@ -283,7 +283,7 @@ class KLogger
     public function writeFreeFormLine($line)
     {
         if ($this->_logStatus == self::STATUS_LOG_OPEN
-            && $this->_severity != self::OFF) {
+            && $this->_severityThreshold != self::OFF) {
             if (fwrite($this->_fileHandle, $line) === false) {
                 $this->_messageQueue[] = $this->_messages['writefail'];
             }
