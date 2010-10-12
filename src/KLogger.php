@@ -52,7 +52,7 @@ class KLogger
      * Path to the log file
      * @var string
      */
-    private $_logFile      = null;
+    private $_logFilePath  = null;
     /**
      * Current minimum logging threshold
      * @var integer
@@ -142,7 +142,7 @@ class KLogger
             return;
         }
 
-        $this->_logFile = $logDirectory
+        $this->_logFilePath = $logDirectory
             . DIRECTORY_SEPARATOR
             . 'log_'
             . date('Y-m-d')
@@ -153,13 +153,13 @@ class KLogger
             mkdir($logDirectory, self::$_defaultPermissions, true);
         }
 
-        if (file_exists($this->_logFile) && !is_writable($this->_logFile)) {
+        if (file_exists($this->_logFilePath) && !is_writable($this->_logFilePath)) {
             $this->_logStatus = self::STATUS_OPEN_FAILED;
             $this->_messageQueue[] = $this->_messages['writefail'];
             return;
         }
 
-        if (($this->_fileHandle = fopen($this->_logFile, "a"))) {
+        if (($this->_fileHandle = fopen($this->_logFilePath, "a"))) {
             $this->_logStatus = self::STATUS_LOG_OPEN;
             $this->_messageQueue[] = $this->_messages['opensuccess'];
         } else {
