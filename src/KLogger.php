@@ -7,9 +7,9 @@
  *
  * Usage:
  * $log = new KLogger('/var/log/', KLogger::INFO );
- * $log->logInfo("Returned a million search results"); //Prints to the log file
- * $log->logFatal("Oh dear."); //Prints to the log file
- * $log->logDebug("x = 5"); //Prints nothing due to current severity threshhold
+ * $log->logInfo('Returned a million search results'); //Prints to the log file
+ * $log->logFatal('Oh dear.'); //Prints to the log file
+ * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
  *
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
  * @since   July 26, 2008
@@ -85,7 +85,7 @@ class KLogger
      * Valid PHP date() format string for log timestamps
      * @var string
      */
-    private static $_dateFormat         = "Y-m-d G:i:s";
+    private static $_dateFormat         = 'Y-m-d G:i:s';
     /**
      * Octal notation for default permissions of the log file
      * @var integer
@@ -160,7 +160,7 @@ class KLogger
             return;
         }
 
-        if (($this->_fileHandle = fopen($this->_logFilePath, "a"))) {
+        if (($this->_fileHandle = fopen($this->_logFilePath, 'a'))) {
             $this->_logStatus = self::STATUS_LOG_OPEN;
             $this->_messageQueue[] = $this->_messages['opensuccess'];
         } else {
