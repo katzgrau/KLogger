@@ -137,7 +137,7 @@ class KLogger
      */
     public function __construct($logDirectory, $severity)
     {
-        $logDirectory = rtrim($logDirectory, '/');
+        $logDirectory = rtrim($logDirectory, '\\/');
 
         if ($severity == self::OFF) {
             return;
