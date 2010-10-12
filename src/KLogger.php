@@ -57,7 +57,7 @@ class KLogger
      * Current minimum logging threshold
      * @var integer
      */
-    private $_priority     = self::INFO;
+    private $_severity     = self::INFO;
     /**
      * This holds the file handle for this instance's log file
      * @var resource
@@ -76,10 +76,10 @@ class KLogger
     );
 
     /**
-     * Default priority of log messages, if not specified
+     * Default severity of log messages, if not specified
      * @var integer
      */
-    private static $_defaultPriority    = self::DEBUG;
+    private static $_defaultSeverity    = self::DEBUG;
     /**
      * Valid PHP date() format string for log timestamps
      * @var string
@@ -101,13 +101,13 @@ class KLogger
      * instance.
      *
      * @param string  $logDirectory File path to the logging directory
-     * @param integer $priority     One of the pre-defined priority constants
+     * @param integer $severity     One of the pre-defined severity constants
      * @return KLogger
      */
-    public static function instance($logDirectory = false, $priority = false)
+    public static function instance($logDirectory = false, $severity = false)
     {
-        if ($priority === false) {
-            $priority = self::$_defaultPriority;
+        if ($severity === false) {
+            $severity = self::$_defaultSeverity;
         }
         
         if ($logDirectory === false) {
@@ -122,7 +122,7 @@ class KLogger
             return self::$instances[$logDirectory];
         }
 
-        self::$instances[$logDirectory] = new self($logDirectory, $priority);
+        self::$instances[$logDirectory] = new self($logDirectory, $severity);
 
         return self::$instances[$logDirectory];
     }
@@ -131,14 +131,14 @@ class KLogger
      * Class constructor
      *
      * @param string  $logDirectory File path to the logging directory
-     * @param integer $priority     One of the pre-defined priority constants
+     * @param integer $severity     One of the pre-defined severity constants
      * @return void
      */
-    public function __construct($logDirectory, $priority)
+    public function __construct($logDirectory, $severity)
     {
         $logDirectory = rtrim($logDirectory, '/');
 
-        if ($priority == self::OFF) {
+        if ($severity == self::OFF) {
             return;
         }
 
@@ -148,7 +148,7 @@ class KLogger
             . date('Y-m-d')
             . '.txt';
 
-        $this->_priority = $priority;
+        $this->_severity = $severity;
         if (!file_exists($logDirectory)) {
             mkdir($logDirectory, self::$_defaultPermissions, true);
         }
@@ -206,7 +206,7 @@ class KLogger
     }
 
     /**
-     * Writes a $line to the log with a priority level of INFO
+     * Writes a $line to the log with a severity level of INFO
      *
      * @param string $line Information to log
      * @return void
@@ -217,7 +217,7 @@ class KLogger
     }
 
     /**
-     * Writes a $line to the log with a priority level of DEBUG
+     * Writes a $line to the log with a severity level of DEBUG
      *
      * @param string $line Information to log
      * @return void
@@ -228,7 +228,7 @@ class KLogger
     }
 
     /**
-     * Writes a $line to the log with a priority level of WARN
+     * Writes a $line to the log with a severity level of WARN
      *
      * @param string $line Information to log
      * @return void
@@ -239,7 +239,7 @@ class KLogger
     }
 
     /**
-     * Writes a $line to the log with a priority level of ERROR
+     * Writes a $line to the log with a severity level of ERROR
      *
      * @param string $line Information to log
      * @return void
@@ -250,7 +250,7 @@ class KLogger
     }
 
     /**
-     * Writes a $line to the log with a priority level of FATAL
+     * Writes a $line to the log with a severity level of FATAL
      *
      * @param string $line Information to log
      * @return void
@@ -261,15 +261,15 @@ class KLogger
     }
 
     /**
-     * Writes a $line to the log with the given priority
+     * Writes a $line to the log with the given severity
      *
      * @param string  $line     Text to add to the log
-     * @param integer $priority Priority level of log message (use constants)
+     * @param integer $severity Severity level of log message (use constants)
      */
-    public function log($line, $priority)
+    public function log($line, $severity)
     {
-        if ($this->_priority <= $priority) {
-            $status = $this->_getTimeLine($priority);
+        if ($this->_severity <= $severity) {
+            $status = $this->_getTimeLine($severity);
             $this->writeFreeFormLine("$status $line \n");
         }
     }
@@ -283,7 +283,7 @@ class KLogger
     public function writeFreeFormLine($line)
     {
         if ($this->_logStatus == self::STATUS_LOG_OPEN
-            && $this->_priority != self::OFF) {
+            && $this->_severity != self::OFF) {
             if (fwrite($this->_fileHandle, $line) === false) {
                 $this->_messageQueue[] = $this->_messages['writefail'];
             }
