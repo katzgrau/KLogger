@@ -3,17 +3,18 @@
 /**
  * Finally, a light, permissions-checking logging class.
  *
- * Author : Kenny Katzgrau <katzgrau@gmail.com>
- * Date : July 26, 2008
- * Comments : Originally written for use with wpSearch
- * Website : http://codefury.net
- * Version : 1.0
+ * Originally written for use with wpSearch
  *
  * Usage:
- * $log = new KLogger ( "log.txt" , KLogger::INFO );
- * $log->_logInfo("Returned a million search results"); //Prints to the log file
- * $log->_logFatal("Oh dear."); //Prints to the log file
- * $log->_logDebug("x = 5"); //Prints nothing due to priority setting
+ * $log = new KLogger('/var/log/', KLogger::INFO );
+ * $log->logInfo("Returned a million search results"); //Prints to the log file
+ * $log->logFatal("Oh dear."); //Prints to the log file
+ * $log->logDebug("x = 5"); //Prints nothing due to current severity threshhold
+ *
+ * @author  Kenny Katzgrau <katzgrau@gmail.com>
+ * @since   July 26, 2008
+ * @link    http://codefury.net
+ * @version 0.1
  */
 
 /**
