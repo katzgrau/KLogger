@@ -231,6 +231,16 @@ class KLogger
     }
 
     /**
+     * Sets the date format used by all instances of KLogger
+     * 
+     * @param string $dateFormat Valid format string for date()
+     */
+    public static function setDateFormat($dateFormat)
+    {
+        self::$_dateFormat = $dateFormat;
+    }
+
+    /**
      * Writes a $line to the log with a severity level of INFO. Any information
      * can be used here, or it could be used with E_STRICT errors
      *
