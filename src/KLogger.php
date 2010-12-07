@@ -127,7 +127,7 @@ class KLogger
         
         if ($logDirectory === false) {
             if (count(self::$instances) > 0) {
-                return self::$instances[0];
+                return current(self::$instances);
             } else {
                 $logDirectory = dirname(__FILE__);
             }
