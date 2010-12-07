@@ -321,7 +321,7 @@ class KLogger
      */
     public function logCrit($line)
     {
-        $this->log($line, self::FATAL);
+        $this->log($line, self::CRIT);
     }
 
     /**
@@ -343,7 +343,7 @@ class KLogger
      */
     public function log($line, $severity)
     {
-        if ($this->_severityThreshold <= $severity) {
+        if ($this->_severityThreshold >= $severity) {
             $status = $this->_getTimeLine($severity);
             $this->writeFreeFormLine("$status $line \n");
         }
@@ -376,6 +376,8 @@ class KLogger
                 return "$time - ALERT -->";
             case self::CRIT:
                 return "$time - CRIT -->";
+            case self::FATAL: # FATAL is an alias of CRIT
+                return "$time - FATAL -->";
             case self::NOTICE:
                 return "$time - NOTICE -->";
             case self::INFO:
@@ -386,8 +388,6 @@ class KLogger
                 return "$time - DEBUG -->";
             case self::ERR:
                 return "$time - ERROR -->";
-            case self::FATAL:
-                return "$time - FATAL -->";
             default:
                 return "$time - LOG -->";
         }
