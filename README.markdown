@@ -18,24 +18,16 @@ This github project will host the development of the next version of KLogger.
 The original version of KLogger is tagged as version 0.1, and is available for
 download [here](http://github.com/katzgrau/KLogger/downloads).
 
+## Basic Usage
+
+    $log = new KLogger('/var/log/'); # Specify the log directory
+    $log->logInfo('Returned a million search results'); //Prints to the log file
+    $log->logFatal('Oh dear.'); //Prints to the log file
+
 ## Goals
 
-KLogger's API will change for the better for it's 1.0 release. Expected changes
-include:
-
- * Adherence to the Zend Coding Standards for PHP (right now, KLogger has a
-   .NET-ish member and method naming convention). The names of private
-   methods will be prefixed with '_' and camel-cased, for example.
- * The implementation of a singleton pattern. A logger is likely needed in
-   many parts of an application — there should be no need to instantiate
-   multiple instances. You'll probably see: `$log = KLogger::instance();` in
-   the near future.
- * Implementation of rolling log files. I've debated whether log files should
-   based on simply the date, or both the date size of the log file. I'm
-   thinking just the date will be sufficient to start.
- * Put KLogger under a specific license (which will happen below)
- * Have a bit more encapsulation of class members (and erase my cheeky
-  comments about not having encapsulation)
+All of KLogger's internal goals have been met (there used to be a list here).
+If you have a feature request, send it to katzgrau@gmail.com
 
 ## Why use KLogger?
 
