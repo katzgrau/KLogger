@@ -48,8 +48,9 @@ Additionally, it's been used in numerous projects, both commercial and personal.
 
 ## Special Thanks
 
-Special thanks to all contributors, which right now includes one person:
+Special thanks to all contributors, which right now includes two people:
 
+[Tim Kinnane](http://twitter.com/etherealtim)
 [Brian Fenton](http://github.com/fentie)
 
 ## License
