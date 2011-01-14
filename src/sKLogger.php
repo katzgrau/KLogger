@@ -129,6 +129,15 @@ class sKLogger
      */
     private static $_ip			= true;
     /**
+     * A valid sprintf string to use as a display format
+     * We assume the ip is set to be display and we have:
+     *   1-> datetime
+     *   2-> severity 
+     *   3-> ip
+     * @var stirng
+     */
+    private static $_messageFormat 	= '[%1$s][%3$s][%2$s]'; 
+    /**
      * Partially implements the Singleton pattern. Each $logDirectory gets one
      * instance.
      *
@@ -264,7 +273,7 @@ class sKLogger
         if(isset($timeF)) {
             self::$_dateF = $dateF;
             self::$_timeF = $timeF;
-            self::$_dateFormat = self::$dateF." ".self::$timeF;
+            self::$_dateFormat = self::$_dateF." ".self::$timeF;
         } else {
             self::$_dateFormat = $dateF;
         }
@@ -272,6 +281,12 @@ class sKLogger
     public static function setDisplayIp($bool)
     {
         if (is_bool($bool)) self::$_ip = $bool;
+    }
+    public static function setDisplayFormat($format)
+    {
+        if(preg_match('/%(?:\d+\$)?[dfsu]/',$format )) {
+            self::$_messageFormat = $format;
+        }
     }
     /**
      * Writes a $line to the log with a severity level of INFO. Any information
@@ -401,16 +416,15 @@ class sKLogger
 
     private function _getStatus($level)
     {
+        $ip = '';
+        $severity = 'LOG';
         $time = date(self::$_dateFormat);
-        //remove status
-        $status = $time;
         if(self::$_ip && isset($_SERVER['REMOTE_ADDR'])) {
-            $status .= "- ".$_SERVER['REMOTE_ADDR'];
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
         if(isset(self::$_sMessages[$level])) {
-	    return "$status - ".self::$_sMessages[$level]."  -->";
-        } else {
-            return "$status - LOG -->";
+            $severity = self::$_sMessages[$level];
         }
+	return sprintf(self::$_messageFormat, $time, $severity, $ip);
     }
 }
