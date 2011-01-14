@@ -26,8 +26,10 @@ sKLogger::logNotice('Notice Test');
 sKLogger::setDisplayIp(true);
 
 # change the format again
-sKLogger::setDisplayFormat('xxx %1$s xxx %3$s xxxx');
+sKLogger::setDisplayFormat('DATE: %1$s IP: %3$s - %2$s ->');
 sKLogger::logWarn('Warn Test');
 sKLogger::logError('Error Test');
+# change the format again and again 
+sKLogger::setDisplayFormat('- %2$s ( %1$s ) -');
 # and more...
 require_once(dirname(__FILE__) . "/sKLoggerExample2.php");
