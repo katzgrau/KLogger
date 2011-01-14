@@ -273,7 +273,7 @@ class sKLogger
         if(isset($timeF)) {
             self::$_dateF = $dateF;
             self::$_timeF = $timeF;
-            self::$_dateFormat = self::$_dateF." ".self::$timeF;
+            self::$_dateFormat = self::$_dateF." ".self::$_timeF;
         } else {
             self::$_dateFormat = $dateF;
         }
