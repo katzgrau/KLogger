@@ -1,20 +1,18 @@
 <?php
 
 /**
- * Finally, a light, permissions-checking logging class.
+ * Finally, a light, permissions-checking static logging class.
  *
- * Originally written for use with wpSearch
+ * This is the version 0.1 KLogger with some static enhance.
  *
  * Usage:
- * $log = new KLogger('/var/log/', KLogger::INFO );
- * $log->logInfo('Returned a million search results'); //Prints to the log file
- * $log->logFatal('Oh dear.'); //Prints to the log file
- * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
+ *  - Check KLogger/example/sKLoggerExample.php and sKLoggerExample2.php
  *
- * @author  Kenny Katzgrau <katzgrau@gmail.com>
- * @since   July 26, 2008
- * @link    http://codefury.net
- * @version 0.1
+ * @author  Kenny Katzgrau <katzgrau@gmail.com>, Dimitrios Meggidis <tydeas.dr@gmail.com>
+ * @since   January 14, 2010
+ * @link    http://codefury.net <Kenny Katzgray>
+ *          http://github.com/dmtrs <Dimitrios Meggidis>
+ * @version 0.2
  */
 
 /**
