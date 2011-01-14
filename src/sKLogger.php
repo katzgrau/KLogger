@@ -136,7 +136,7 @@ class sKLogger
      *   3-> ip
      * @var stirng
      */
-    private static $_messageFormat 	= '[%1$s][%3$s][%2$s]'; 
+    private static $_messageFormat 	= '[ %1$s ][ %3$s ][ %2$s ]'; 
     /**
      * Partially implements the Singleton pattern. Each $logDirectory gets one
      * instance.
