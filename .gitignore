@@ -1,4 +1,6 @@
-src/test.php
-test/
-test/*
-test.php
+.DS_Store
+src/.DS_Store
+example/.DS_Store
+example/*.txt
+src/*.txt
+*.txt
