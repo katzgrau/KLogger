@@ -20,7 +20,7 @@
 /**
  * Class documentation
  */
-class KLogger
+class LEPTON_Helper_KLogger
 {
     /**
      * Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
@@ -89,7 +89,7 @@ class KLogger
         'opensuccess' => 'The log file was opened successfully.',
         'openfail'    => 'The file could not be opened. Check permissions.',
     );
-
+    
     /**
      * Default severity of log messages, if not specified
      * @var integer
@@ -124,7 +124,7 @@ class KLogger
         if ($severity === false) {
             $severity = self::$_defaultSeverity;
         }
-        
+
         if ($logDirectory === false) {
             if (count(self::$instances) > 0) {
                 return current(self::$instances);
@@ -198,9 +198,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logDebug($line)
+    public function logDebug($line,$args=NULL)
     {
-        $this->log($line, self::DEBUG);
+        $this->log($line, self::DEBUG, $args);
     }
 
     /**
@@ -232,7 +232,7 @@ class KLogger
 
     /**
      * Sets the date format used by all instances of KLogger
-     * 
+     *
      * @param string $dateFormat Valid format string for date()
      */
     public static function setDateFormat($dateFormat)
@@ -247,9 +247,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logInfo($line)
+    public function logInfo($line,$args=NULL)
     {
-        $this->log($line, self::INFO);
+        $this->log($line, self::INFO, $args);
     }
 
     /**
@@ -259,22 +259,22 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logNotice($line)
+    public function logNotice($line,$args=NULL)
     {
-        $this->log($line, self::NOTICE);
+        $this->log($line, self::NOTICE, $args);
     }
 
     /**
      * Writes a $line to the log with a severity level of WARN. Generally
-     * corresponds to E_WARNING, E_USER_WARNING, E_CORE_WARNING, or 
+     * corresponds to E_WARNING, E_USER_WARNING, E_CORE_WARNING, or
      * E_COMPILE_WARNING
      *
      * @param string $line Information to log
      * @return void
      */
-    public function logWarn($line)
+    public function logWarn($line,$args=NULL)
     {
-        $this->log($line, self::WARN);
+        $this->log($line, self::WARN, $args);
     }
 
     /**
@@ -284,9 +284,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logError($line)
+    public function logError($line,$args=NULL)
     {
-        $this->log($line, self::ERR);
+        $this->log($line, self::ERR, $args);
     }
 
     /**
@@ -297,9 +297,9 @@ class KLogger
      * @return void
      * @deprecated Use logCrit
      */
-    public function logFatal($line)
+    public function logFatal($line,$args=NULL)
     {
-        $this->log($line, self::FATAL);
+        $this->log($line, self::FATAL, $args);
     }
 
     /**
@@ -308,9 +308,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logAlert($line)
+    public function logAlert($line,$args=NULL)
     {
-        $this->log($line, self::ALERT);
+        $this->log($line, self::ALERT, $args);
     }
 
     /**
@@ -319,9 +319,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logCrit($line)
+    public function logCrit($line,$args=NULL)
     {
-        $this->log($line, self::CRIT);
+        $this->log($line, self::CRIT, $args);
     }
 
     /**
@@ -330,9 +330,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logEmerg($line)
+    public function logEmerg($line,$args=NULL)
     {
-        $this->log($line, self::EMERG);
+        $this->log($line, self::EMERG, $args);
     }
 
     /**
@@ -341,11 +341,28 @@ class KLogger
      * @param string  $line     Text to add to the log
      * @param integer $severity Severity level of log message (use constants)
      */
-    public function log($line, $severity)
+    public function log($line, $severity, $args=NULL)
     {
         if ($this->_severityThreshold >= $severity) {
             $status = $this->_getTimeLine($severity);
+            $bt     = debug_backtrace();
+            while ( $bt[0]['class'] == 'LEPTON_Helper_KLogger' ) {
+                $last  = array_shift($bt);
+			}
+			if ( count($bt) ) {
+				$info  = array_shift($bt);
+			}
+	        $class     = isset( $info['class'] )    ? $info['class']    : NULL;
+	        $function  = isset( $info['function'] ) ? $info['function'] : NULL;
+	        $file      = basename($info['file']);
+	        $code_line = $last['line'];
+	        $line      = "[$function()] $line [ $file:$code_line ]";
             $this->writeFreeFormLine("$status $line \n");
+            if ( $args ) {
+	            $dump = print_r( $args, 1 );
+	            $dump = preg_replace( "/\r?\n/", "\n          ", $dump );
+	            $this->writeFreeFormLine( print_r( $dump, 1 ) . "\n" );
+	        }
         }
     }
 
