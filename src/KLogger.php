@@ -12,6 +12,7 @@
  * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
  * $log->logStartTime('big loop'); // starts timing task
  * $log->logEndTime('big loop'); // ends timing task and prints out elapsed time
+ *
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
  * @since   July 26, 2008
  * @link    http://codefury.net
@@ -35,8 +36,8 @@ class KLogger
     const NOTICE = 5;  // Notice: normal but significant condition
     const INFO   = 6;  // Informational: informational messages
     const DEBUG  = 7;  // Debug: debug messages
-	const TIMER  = 8;  // Timer: timing of code (only displays when logEndTime is called)
-	
+    const TIMER  = 8;  // Timer: timing of code (only displays when logEndTime is called)
+    
     //custom logging level
     /**
      * Log nothing at all
@@ -70,7 +71,7 @@ class KLogger
      * @var string
      */
     private $_logFilePath       = null;
-	/**
+    /**
      * Start time (used for calculating script running time)
      * @var string
      */
@@ -159,8 +160,8 @@ class KLogger
     public function __construct($logDirectory, $severity)
     {
        
-		$logDirectory = rtrim($logDirectory, '\\/');
-		
+        $logDirectory = rtrim($logDirectory, '\\/');
+        
         if ($severity === self::OFF) {
             return;
         }
@@ -172,7 +173,7 @@ class KLogger
             . '.txt';
         $this->_severityThreshold = $severity;
         if (!file_exists($logDirectory)) {
-			print "Making directory: <br>";
+            print "Making directory: <br>";
             mkdir($logDirectory, self::$_defaultPermissions, true);
         }
 
@@ -181,7 +182,7 @@ class KLogger
             $this->_messageQueue[] = $this->_messages['writefail'];
             return;
         }
-		
+        
         if (($this->_fileHandle = fopen($this->_logFilePath, 'a'))) {
             $this->_logStatus = self::STATUS_LOG_OPEN;
             $this->_messageQueue[] = $this->_messages['opensuccess'];
@@ -248,32 +249,32 @@ class KLogger
         self::$_dateFormat = $dateFormat;
     }
 
-	/**
-	* Starts timing your code. if you choose to specify a task it will log something otherwise it simply starts the timer.
-	*
-	* @param string $task the task we are timing
-	* @return void
-	*/
-	public function logStartTime($task = "") {
-		$this->_startTime = microtime(true);
-		if($task != "") {
-			$this->log(sprintf("Started timing %s", $task), self::TIMER);
-		}
-	}
-	
-	/**
-	* Stops timing your code and prints out the task we just finished timing. Displays in milliseconds
-	*
-	* @param string $task the task we just finished timing.
-	* @return void
-	*/
-	public function logEndTime($task) {
-		$end_time = microtime(true) - $this->_startTime;
-		//convert to millseconds (most common)
-		$end_time *= 1000;
-		$this->log(sprintf("Finished %s in %.3f milliseconds", $task, $end_time), self::TIMER);
-	}
-	
+    /**
+    * Starts timing your code. if you choose to specify a task it will log something otherwise it simply starts the timer.
+    *
+    * @param string $task the task we are timing
+    * @return void
+    */
+    public function logStartTime($task = "") {
+        $this->_startTime = microtime(true);
+        if($task != "") {
+            $this->log(sprintf("Started timing %s", $task), self::TIMER);
+        }
+    }
+    
+    /**
+    * Stops timing your code and prints out the task we just finished timing. Displays in milliseconds
+    *
+    * @param string $task the task we just finished timing.
+    * @return void
+    */
+    public function logEndTime($task) {
+        $end_time = microtime(true) - $this->_startTime;
+        //convert to millseconds (most common)
+        $end_time *= 1000;
+        $this->log(sprintf("Finished %s in %.3f milliseconds", $task, $end_time), self::TIMER);
+    }
+    
     /**
      * Writes a $line to the log with a severity level of INFO. Any information
      * can be used here, or it could be used with E_STRICT errors
@@ -420,8 +421,8 @@ class KLogger
                 return "$time - WARN -->";
             case self::DEBUG:
                 return "$time - DEBUG -->";
-			case self::TIMER:
-				return "$time - TIMER --> ";
+            case self::TIMER:
+                return "$time - TIMER --> ";
             case self::ERR:
                 return "$time - ERROR -->";
             default:

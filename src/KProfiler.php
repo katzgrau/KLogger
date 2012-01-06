@@ -19,65 +19,65 @@
 * Simple class which represents a log entry.
 */
 class KLogEntry {
-	public $time;
-	public $type;
-	public $message; //or "task" if timer entry
-	//properties specific to timer logs
-	public $elapsed_time;
-	
-	public function __construct($time, $type, $message, $elapsed_time) {
-		$this->time = $time;
-		$this->type = $type;
-		$this->message = $message;
-		$this->elapsed_time = $elapsed_time;
-	}
+    public $time;
+    public $type;
+    public $message; //or "task" if timer entry
+    //properties specific to timer logs
+    public $elapsed_time;
+    
+    public function __construct($time, $type, $message, $elapsed_time) {
+        $this->time = $time;
+        $this->type = $type;
+        $this->message = $message;
+        $this->elapsed_time = $elapsed_time;
+    }
 }
 /**
 * Actual profiler class. Reads the log in and creates stats.
 */
 class KProfiler 
 {
-	/**
-	* @var string the log directory. We'll use this to display the most current log.
-	*/
-	private $_logDir;
-	
-	/**
-	* @var array the list of KLogEntrys from the log file.
-	*/
-	private $_logEntries;
-	
-	public function __construct($log_dir) {
-		$this->_logDir = $log_dir;
-	}
-	
-	/** 
-	* Filters and returns only the log entries with the specified type.
-	* @param type the log type we're filtering for
-	* @return array a filtered array containing only log entries that have the type specified.
-	*/
-	private function filterEntries($type) {
-		
-	}
-	
-	/**
-	* Function which opens the specified file and reads in all the page entries.
-	* @param log_file the log file path
-	* @return array The array of KLogEntrys from the file
-	*/
-	private function readEntries($log_file) {
-		
-	}
-	
-	/**
-	* Function which looks at all time entries, combines identical tasks, then sorts them in descending order
-	* so that we can tell which tasks are taking the longest.
-	* @param entries The log entries we're combining. They should all be TIMER entries (prefiltered)
-	* @return array An array of KLogEntry items. However, there are no two entries with the same task (they're all combined). They're
-	* also sorted in descending order (based on milliseconds)
-	*/
-	private function totalEntries($entries) {
-		
-	}
+    /**
+    * @var string the log directory. We'll use this to display the most current log.
+    */
+    private $_logDir;
+    
+    /**
+    * @var array the list of KLogEntrys from the log file.
+    */
+    private $_logEntries;
+    
+    public function __construct($log_dir) {
+        $this->_logDir = $log_dir;
+    }
+    
+    /** 
+    * Filters and returns only the log entries with the specified type.
+    * @param type the log type we're filtering for
+    * @return array a filtered array containing only log entries that have the type specified.
+    */
+    private function filterEntries($type) {
+        
+    }
+    
+    /**
+    * Function which opens the specified file and reads in all the page entries.
+    * @param log_file the log file path
+    * @return array The array of KLogEntrys from the file
+    */
+    private function readEntries($log_file) {
+        
+    }
+    
+    /**
+    * Function which looks at all time entries, combines identical tasks, then sorts them in descending order
+    * so that we can tell which tasks are taking the longest.
+    * @param entries The log entries we're combining. They should all be TIMER entries (prefiltered)
+    * @return array An array of KLogEntry items. However, there are no two entries with the same task (they're all combined). They're
+    * also sorted in descending order (based on milliseconds)
+    */
+    private function totalEntries($entries) {
+        
+    }
 }
 ?>
