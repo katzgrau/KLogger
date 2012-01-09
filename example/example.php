@@ -15,8 +15,6 @@ $log->logCrit('Crit test');
 $log->logEmerg('Emerg Test');
 $log->logInfo("HI!");
 
-$log->logStartTime();
-
+$log->logStartTime('Sleeping');
 sleep(1);
-print "Slept: ".dirname(__FILE__)." with a symlink: ".KLogger::TIMER;
-$log->logEndTime("Slept and did nothing");
+$log->logEndTime('Sleeping'); //notice that the task names match

@@ -72,10 +72,10 @@ class KLogger
      */
     private $_logFilePath       = null;
     /**
-     * Start time (used for calculating script running time)
-     * @var string
-     */
-    private $_startTime       = 0;
+    * Assoc array of tasks and their respective start times.
+    * @var array
+    */
+	private $_timingTasks;
     /**
      * Current minimum logging threshold
      * @var integer
@@ -255,24 +255,34 @@ class KLogger
     * @param string $task the task we are timing
     * @return void
     */
-    public function logStartTime($task = "") {
-        $this->_startTime = microtime(true);
-        if($task != "") {
+    public function logStartTime($task = "default") {
+		$this->_timingTasks[$task] = microtime(true);
+		
+        if ($task != "default") {
             $this->log(sprintf("Started timing %s", $task), self::TIMER);
         }
     }
     
     /**
-    * Stops timing your code and prints out the task we just finished timing. Displays in milliseconds
+    * Stops timing your code and prints out the specified task.
     *
-    * @param string $task the task we just finished timing.
+    * @param string $task the task you're finished time
     * @return void
     */
-    public function logEndTime($task) {
-        $end_time = microtime(true) - $this->_startTime;
-        //convert to millseconds (most common)
-        $end_time *= 1000;
-        $this->log(sprintf("Finished %s in %.3f milliseconds", $task, $end_time), self::TIMER);
+    public function logEndTime($task = "default") {
+		$startTime = $this->_timingTasks[$task];
+		if (isset($startTime)) {
+			$end_time = microtime(true) - $startTime;
+	        //convert to millseconds (most common)
+	        $end_time *= 1000;
+			
+			if ($task != "default") {
+	        	$this->log(sprintf("Finished %s in %.3f milliseconds", $task, $end_time), self::TIMER);
+			} else {
+				$this->log(sprintf("Finished in %.3f milliseconds", $end_time), self::TIMER);
+			}
+		}
+        
     }
     
     /**
