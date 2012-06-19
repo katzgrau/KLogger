@@ -20,7 +20,7 @@
 /**
  * Class documentation
  */
-class LEPTON_Helper_KLogger
+class KLogger
 {
     /**
      * Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
@@ -346,7 +346,7 @@ class LEPTON_Helper_KLogger
         if ($this->_severityThreshold >= $severity) {
             $status = $this->_getTimeLine($severity);
             $bt     = debug_backtrace();
-            while ( $bt[0]['class'] == 'LEPTON_Helper_KLogger' ) {
+            while ( $bt[0]['class'] == 'KLogger' ) {
                 $last  = array_shift($bt);
 			}
 			if ( count($bt) ) {
