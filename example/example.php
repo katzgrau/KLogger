@@ -13,3 +13,4 @@ $log->logFatal('Fatal Test');
 $log->logAlert('Alert Test');
 $log->logCrit('Crit test');
 $log->logEmerg('Emerg Test');
+
