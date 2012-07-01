@@ -6,15 +6,15 @@
  * Originally written for use with wpSearch
  *
  * Usage:
- * $log = new KLogger('/var/log/', KLogger::INFO );
+ * $log = new KLogger('/var/log/', KLogger::INFO);
  * $log->logInfo('Returned a million search results'); //Prints to the log file
  * $log->logFatal('Oh dear.'); //Prints to the log file
  * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
  *
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
- * @since   July 26, 2008
+ * @since   July 26, 2008 — Last update July 1, 2012
  * @link    http://codefury.net
- * @version 0.1
+ * @version 0.2.0
  */
 
 /**
@@ -52,6 +52,13 @@ class KLogger
     const STATUS_LOG_OPEN    = 1;
     const STATUS_OPEN_FAILED = 2;
     const STATUS_LOG_CLOSED  = 3;
+
+    /**
+     * We need a default argument value in order to add the ability to easily
+     * print out objects etc. But we can't use NULL, 0, FALSE, etc, because those
+     * are often the values the developers will test for. So we'll make one up.
+     */
+    const NO_ARGUMENTS = 'KLogger::NO_ARGUMENTS';
 
     /**
      * Current status of the log file
@@ -198,7 +205,7 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logDebug($line)
+    public function logDebug($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::DEBUG);
     }
@@ -247,9 +254,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logInfo($line)
+    public function logInfo($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::INFO);
+        $this->log($line, self::INFO, $args);
     }
 
     /**
@@ -259,9 +266,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logNotice($line)
+    public function logNotice($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::NOTICE);
+        $this->log($line, self::NOTICE, $args);
     }
 
     /**
@@ -272,9 +279,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logWarn($line)
+    public function logWarn($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::WARN);
+        $this->log($line, self::WARN, $args);
     }
 
     /**
@@ -284,9 +291,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logError($line)
+    public function logError($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::ERR);
+        $this->log($line, self::ERR, $args);
     }
 
     /**
@@ -297,9 +304,9 @@ class KLogger
      * @return void
      * @deprecated Use logCrit
      */
-    public function logFatal($line)
+    public function logFatal($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::FATAL);
+        $this->log($line, self::FATAL, $args);
     }
 
     /**
@@ -308,9 +315,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logAlert($line)
+    public function logAlert($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::ALERT);
+        $this->log($line, self::ALERT, $args);
     }
 
     /**
@@ -319,9 +326,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logCrit($line)
+    public function logCrit($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::CRIT);
+        $this->log($line, self::CRIT, $args);
     }
 
     /**
@@ -330,9 +337,9 @@ class KLogger
      * @param string $line Information to log
      * @return void
      */
-    public function logEmerg($line)
+    public function logEmerg($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::EMERG);
+        $this->log($line, self::EMERG, $args);
     }
 
     /**
@@ -341,11 +348,19 @@ class KLogger
      * @param string  $line     Text to add to the log
      * @param integer $severity Severity level of log message (use constants)
      */
-    public function log($line, $severity)
+    public function log($line, $severity, $args = self::NO_ARGUMENTS)
     {
         if ($this->_severityThreshold >= $severity) {
             $status = $this->_getTimeLine($severity);
-            $this->writeFreeFormLine("$status $line \n");
+            
+            $line = "$status $line";
+            
+            if($args !== self::NO_ARGUMENTS) {
+                /* Print the passed object value */
+                $line = $line . '; ' . var_export($args, true);
+            }
+            
+            $this->writeFreeFormLine($line . PHP_EOL);
         }
     }
 

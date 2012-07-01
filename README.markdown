@@ -23,6 +23,7 @@ download [here](http://github.com/katzgrau/KLogger/downloads).
     $log = new KLogger('/var/log/'); # Specify the log directory
     $log->logInfo('Returned a million search results'); //Prints to the log file
     $log->logFatal('Oh dear.'); //Prints to the log file
+    $log->logInfo('Here is an object', $obj); //Prints to the log file with a dump of the object
 
 ## Goals
 
@@ -48,10 +49,11 @@ Additionally, it's been used in numerous projects, both commercial and personal.
 
 ## Special Thanks
 
-Special thanks to all contributors, which right now includes two people:
+Special thanks to all contributors, which right now includes three people:
 
 [Tim Kinnane](http://twitter.com/etherealtim)
 [Brian Fenton](http://github.com/fentie)
+[Cameron Will](https://github.com/cwill747)
 
 ## License
 
