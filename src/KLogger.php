@@ -181,7 +181,7 @@ class KLogger
             return;
         }
 
-        if (($this->_fileHandle = fopen($this->_logFilePath, 'a'))) {
+        if (($this->_fileHandle = fopen($this->_logFilePath, 'a')) && is_resource($this->_fileHandle)) {
             $this->_logStatus = self::STATUS_LOG_OPEN;
             $this->_messageQueue[] = $this->_messages['opensuccess'];
         } else {
