@@ -140,7 +140,7 @@ class KLogger
             }
         }
 
-        if (in_array($logDirectory, self::$instances)) {
+        if (in_array($logDirectory, array_keys(self::$instances))) {
             return self::$instances[$logDirectory];
         }
 
@@ -181,7 +181,7 @@ class KLogger
             return;
         }
 
-        if (($this->_fileHandle = fopen($this->_logFilePath, 'a'))) {
+        if (($this->_fileHandle = fopen($this->_logFilePath, 'a')) && is_resource($this->_fileHandle)) {
             $this->_logStatus = self::STATUS_LOG_OPEN;
             $this->_messageQueue[] = $this->_messages['opensuccess'];
         } else {
@@ -207,7 +207,7 @@ class KLogger
      */
     public function logDebug($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::DEBUG);
+        $this->log($line, self::DEBUG, $args);
     }
 
     /**
