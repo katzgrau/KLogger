@@ -87,6 +87,14 @@ class KLogger
     private $_fileHandle        = null;
 
     /**
+     * This holds the max size  that the file should not cross.
+     * @var resource
+     */
+    private $_maxFileSize       = 100000000;
+	
+	
+
+    /**
      * Standard messages produced by the class. Can be modified for il8n
      * @var array
      */
@@ -164,11 +172,18 @@ class KLogger
             return;
         }
 
+        	
+		
+		$FileNo = 0;	
+		while($this->_logFilePath == null || (file_exists($this->_logFilePath) && filesize($this->_logFilePath) > $this->_maxFileSize))	
+		{
         $this->_logFilePath = $logDirectory
             . DIRECTORY_SEPARATOR
             . 'log_'
-            . date('Y-m-d')
+            . date('Y-m-d-')
+			. $FileNo++
             . '.txt';
+		}
 
         $this->_severityThreshold = $severity;
         if (!file_exists($logDirectory)) {
