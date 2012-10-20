@@ -408,3 +408,5 @@ class KLogger
         }
     }
 }
+
+?>
