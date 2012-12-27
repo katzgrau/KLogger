@@ -61,6 +61,27 @@ class KLogger
     const NO_ARGUMENTS = 'KLogger::NO_ARGUMENTS';
 
     /**
+     * Array of aliases for errors
+     * @var array
+     * @author Nester
+     */
+    protected $_errorAliases = array(
+        self::EMERG  => "EMERG",
+        self::ALERT  => "ALERT",
+        self::CRIT   => "CRIT",
+        self::ERR    => "ERROR",
+        self::WARN   => "WARN",
+        self::NOTICE => "NOTICE",
+        self::INFO   => "INFO",
+        self::DEBUG  => "DEBUG",
+    );
+
+    /**
+     * Alias for no error
+     */
+    const DEFAULT_ALIAS = "LOG";
+
+    /**
      * Current status of the log file
      * @var integer
      */
@@ -383,28 +404,7 @@ class KLogger
     private function _getTimeLine($level)
     {
         $time = date(self::$_dateFormat);
-
-        switch ($level) {
-            case self::EMERG:
-                return "$time - EMERG -->";
-            case self::ALERT:
-                return "$time - ALERT -->";
-            case self::CRIT:
-                return "$time - CRIT -->";
-            case self::FATAL: # FATAL is an alias of CRIT
-                return "$time - FATAL -->";
-            case self::NOTICE:
-                return "$time - NOTICE -->";
-            case self::INFO:
-                return "$time - INFO -->";
-            case self::WARN:
-                return "$time - WARN -->";
-            case self::DEBUG:
-                return "$time - DEBUG -->";
-            case self::ERR:
-                return "$time - ERROR -->";
-            default:
-                return "$time - LOG -->";
-        }
+        $errorAlias = isset($this->_errorAliases[$level]) ? $this->_errorAliases[$level] : self::DEFAULT_ALIAS;
+        return "$time - $errorAlias -->";
     }
 }
