@@ -207,7 +207,7 @@ class KLogger
      */
     public function logDebug($line, $args = self::NO_ARGUMENTS)
     {
-        $this->log($line, self::DEBUG);
+        $this->log($line, self::DEBUG, $args);
     }
 
     /**
