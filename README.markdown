@@ -19,12 +19,12 @@ The original version of KLogger is tagged as version 0.1, and is available for
 download [here](http://github.com/katzgrau/KLogger/downloads).
 
 ## Basic Usage
-
-    $log = new KLogger('/var/log/'); # Specify the log directory
-    $log->logInfo('Returned a million search results'); //Prints to the log file
-    $log->logFatal('Oh dear.'); //Prints to the log file
-    $log->logInfo('Here is an object', $obj); //Prints to the log file with a dump of the object
-
+```php
+    $log = new KLogger('/var/log/'); // Specify the log directory
+    $log->logInfo('Returned a million search results'); // Prints to the log file
+    $log->logFatal('Oh dear.'); // Prints to the log file
+    $log->logInfo('Here is an object', $obj); // Prints to the log file with a dump of the object
+```
 ## Goals
 
 All of KLogger's internal goals have been met (there used to be a list here).
@@ -40,10 +40,10 @@ work of others".
 
 Klogger has been used in projects at:
 
-    * The University of Iowa
-    * The University of Laverne
-    * The New Jersey Institute of Technology
-    * Middlesex Hospital in NJ
+* The University of Iowa
+* The University of Laverne
+* The New Jersey Institute of Technology
+* Middlesex Hospital in NJ
 
 Additionally, it's been used in numerous projects, both commercial and personal.
 
@@ -51,9 +51,9 @@ Additionally, it's been used in numerous projects, both commercial and personal.
 
 Special thanks to all contributors, which right now includes three people:
 
-[Tim Kinnane](http://twitter.com/etherealtim)
-[Brian Fenton](http://github.com/fentie)
-[Cameron Will](https://github.com/cwill747)
+* [Tim Kinnane](http://twitter.com/etherealtim)
+* [Brian Fenton](http://github.com/fentie)
+* [Cameron Will](https://github.com/cwill747)
 
 ## License
 
