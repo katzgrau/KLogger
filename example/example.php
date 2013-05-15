@@ -6,6 +6,7 @@ require dirname(__FILE__) . '/../src/KLogger.php';
 $log   = KLogger::instance(dirname(__FILE__), KLogger::DEBUG);
 $args1 = array('a' => array('b' => 'c'), 'd');
 $args2 = NULL;
+$args3 = 'Group1';
 
 $log->logInfo('Info Test');
 $log->logNotice('Notice Test');
@@ -18,3 +19,5 @@ $log->logEmerg('Emerg Test');
 
 $log->logInfo('Testing passing an array or object', $args1);
 $log->logWarn('Testing passing a NULL value', $args2);
+
+$log->logInfo('Testing with an additional log group as a string', $args3);
