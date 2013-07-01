@@ -1,5 +1,7 @@
 # KLogger: A Simple Logging Class For PHP
 
+MY KLOGGER
+
 A project written by Kenny Katzgrau and originally hosted at
 [CodeFury.net](http://codefury.net/projects/klogger/). This marks the
 development of a newer version of KLogger.
