@@ -9,7 +9,7 @@
  * $log = new KLogger('/var/log/', KLogger::INFO);
  * $log->logInfo('Returned a million search results'); //Prints to the log file
  * $log->logFatal('Oh dear.'); //Prints to the log file
- * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
+ * $log->logDebug('x = 5'); //Prints nothing due to current severity threshold
  *
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
  * @since   July 26, 2008 — Last update July 1, 2012
@@ -23,7 +23,7 @@
 class KLogger
 {
     /**
-     * Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
+     * Error severity, from low to high. From BSD syslog RFC, section 4.1.1
      * @link http://www.faqs.org/rfcs/rfc3164.html
      */
     const EMERG  = 0;  // Emergency: system is unusable
@@ -91,7 +91,6 @@ class KLogger
      * @var array
      */
     private $_messages = array(
-        //'writefail'   => 'The file exists, but could not be opened for writing. Check that appropriate permissions have been set.',
         'writefail'   => 'The file could not be written to. Check that appropriate permissions have been set.',
         'opensuccess' => 'The log file was opened successfully.',
         'openfail'    => 'The file could not be opened. Check permissions.',
@@ -119,44 +118,13 @@ class KLogger
     private static $instances           = array();
 
     /**
-     * Partially implements the Singleton pattern. Each $logDirectory gets one
-     * instance.
-     *
-     * @param string  $logDirectory File path to the logging directory
-     * @param integer $severity     One of the pre-defined severity constants
-     * @return KLogger
-     */
-    public static function instance($logDirectory = false, $severity = false)
-    {
-        if ($severity === false) {
-            $severity = self::$_defaultSeverity;
-        }
-        
-        if ($logDirectory === false) {
-            if (count(self::$instances) > 0) {
-                return current(self::$instances);
-            } else {
-                $logDirectory = dirname(__FILE__);
-            }
-        }
-
-        if (in_array($logDirectory, self::$instances)) {
-            return self::$instances[$logDirectory];
-        }
-
-        self::$instances[$logDirectory] = new self($logDirectory, $severity);
-
-        return self::$instances[$logDirectory];
-    }
-
-    /**
      * Class constructor
      *
-     * @param string  $logDirectory File path to the logging directory
-     * @param integer $severity     One of the pre-defined severity constants
-     * @return void
+     * @param string $logDirectory File path to the logging directory
+     * @param int    $severity     One of the pre-defined severity constants
+     * @param string [$logName name the log]
      */
-    public function __construct($logDirectory, $severity)
+    public function __construct($logDirectory, $severity, $logName='')
     {
         $logDirectory = rtrim($logDirectory, '\\/');
 
@@ -166,7 +134,7 @@ class KLogger
 
         $this->_logFilePath = $logDirectory
             . DIRECTORY_SEPARATOR
-            . 'log_'
+            . (!empty( $logName ) ? "{$logName}_" : 'log_')
             . date('Y-m-d')
             . '.txt';
 
@@ -191,6 +159,38 @@ class KLogger
     }
 
     /**
+     * Partially implements the Singleton pattern. Each $logDirectory gets one
+     * instance.
+     *
+     * @param bool|string $logDirectory File path to the logging directory
+     * @param bool|int    $severity     One of the pre-defined severity constants
+     * @param string [$logName name the log]
+     * @return \KLogger
+     */
+    public static function instance($logDirectory = false, $severity = false, $logName='')
+    {
+        if ($severity === false) {
+            $severity = self::$_defaultSeverity;
+        }
+
+        if ($logDirectory === false) {
+            if (count(self::$instances) > 0) {
+                return current(self::$instances);
+            } else {
+                $logDirectory = dirname(__FILE__);
+            }
+        }
+
+        if (in_array($logDirectory, self::$instances)) {
+            return self::$instances[$logDirectory];
+        }
+
+        self::$instances[$logDirectory] = new self($logDirectory, $severity, $logName);
+
+        return self::$instances[$logDirectory];
+    }
+
+    /**
      * Class destructor
      */
     public function __destruct()
@@ -203,6 +203,7 @@ class KLogger
      * Writes a $line to the log with a severity level of DEBUG
      *
      * @param string $line Information to log
+     * @param string [$args] Unused.
      * @return void
      */
     public function logDebug($line, $args = self::NO_ARGUMENTS)
@@ -252,6 +253,7 @@ class KLogger
      * can be used here, or it could be used with E_STRICT errors
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      */
     public function logInfo($line, $args = self::NO_ARGUMENTS)
@@ -264,6 +266,7 @@ class KLogger
      * corresponds to E_STRICT, E_NOTICE, or E_USER_NOTICE errors
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      */
     public function logNotice($line, $args = self::NO_ARGUMENTS)
@@ -277,6 +280,7 @@ class KLogger
      * E_COMPILE_WARNING
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      */
     public function logWarn($line, $args = self::NO_ARGUMENTS)
@@ -289,6 +293,7 @@ class KLogger
      * with E_RECOVERABLE_ERROR
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      */
     public function logError($line, $args = self::NO_ARGUMENTS)
@@ -301,6 +306,7 @@ class KLogger
      * corresponds to E_ERROR, E_USER_ERROR, E_CORE_ERROR, or E_COMPILE_ERROR
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      * @deprecated Use logCrit
      */
@@ -313,6 +319,7 @@ class KLogger
      * Writes a $line to the log with a severity level of ALERT.
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      */
     public function logAlert($line, $args = self::NO_ARGUMENTS)
@@ -324,6 +331,7 @@ class KLogger
      * Writes a $line to the log with a severity level of CRIT.
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      */
     public function logCrit($line, $args = self::NO_ARGUMENTS)
@@ -335,6 +343,7 @@ class KLogger
      * Writes a $line to the log with a severity level of EMERG.
      *
      * @param string $line Information to log
+     * @param string [$args arguments]
      * @return void
      */
     public function logEmerg($line, $args = self::NO_ARGUMENTS)
@@ -346,7 +355,8 @@ class KLogger
      * Writes a $line to the log with the given severity
      *
      * @param string  $line     Text to add to the log
-     * @param integer $severity Severity level of log message (use constants)
+     * @param int $severity Severity level of log message (use constants)
+     * @param string [$args arguments]
      */
     public function log($line, $severity, $args = self::NO_ARGUMENTS)
     {
