@@ -165,9 +165,10 @@ class KLogger
      *
      * @param bool|string $logDirectory File path to the logging directory
      * @param bool|int    $severity     One of the pre-defined severity constants
+     * @param string [$logName name the log]
      * @return \KLogger
      */
-    public static function instance($logDirectory = false, $severity = false)
+    public static function instance($logDirectory = false, $severity = false, $logName='')
     {
         if ($severity === false) {
             $severity = self::$_defaultSeverity;
@@ -185,7 +186,7 @@ class KLogger
             return self::$instances[$logDirectory];
         }
 
-        self::$instances[$logDirectory] = new self($logDirectory, $severity);
+        self::$instances[$logDirectory] = new self($logDirectory, $severity, $logName);
 
         return self::$instances[$logDirectory];
     }
