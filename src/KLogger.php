@@ -9,7 +9,7 @@
  * $log = new KLogger('/var/log/', KLogger::INFO);
  * $log->logInfo('Returned a million search results'); //Prints to the log file
  * $log->logFatal('Oh dear.'); //Prints to the log file
- * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
+ * $log->logDebug('x = 5'); //Prints nothing due to current severity threshold
  *
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
  * @since   July 26, 2008 — Last update July 1, 2012
@@ -23,7 +23,7 @@
 class KLogger
 {
     /**
-     * Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
+     * Error severity, from low to high. From BSD syslog RFC, section 4.1.1
      * @link http://www.faqs.org/rfcs/rfc3164.html
      */
     const EMERG  = 0;  // Emergency: system is unusable
@@ -91,7 +91,6 @@ class KLogger
      * @var array
      */
     private $_messages = array(
-        //'writefail'   => 'The file exists, but could not be opened for writing. Check that appropriate permissions have been set.',
         'writefail'   => 'The file could not be written to. Check that appropriate permissions have been set.',
         'opensuccess' => 'The log file was opened successfully.',
         'openfail'    => 'The file could not be opened. Check permissions.',
