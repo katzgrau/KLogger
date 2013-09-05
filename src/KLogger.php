@@ -408,25 +408,25 @@ class KLogger
 
         switch ($level) {
             case self::EMERG:
-                return "$time - EMERG ".self::SEPERATOR;
+                return "$time - EMERG "  . self::SEPERATOR;
             case self::ALERT:
-                return "$time - ALERT ".self::SEPERATOR;
+                return "$time - ALERT "  . self::SEPERATOR;
             case self::CRIT:
-                return "$time - CRIT ".self::SEPERATOR;
+                return "$time - CRIT "   . self::SEPERATOR;
             case self::FATAL: # FATAL is an alias of CRIT
-                return "$time - FATAL ".self::SEPERATOR;
-            case self::NOTICE:
-                return "$time - NOTICE ".self::SEPERATOR;
+                return "$time - FATAL "  . self::SEPERATOR;
+            case self::NOTICE: 
+                return "$time - NOTICE " . self::SEPERATOR;
             case self::INFO:
-                return "$time - INFO ".self::SEPERATOR;
+                return "$time - INFO "   . self::SEPERATOR;
             case self::WARN:
-                return "$time - WARN ".self::SEPERATOR;
+                return "$time - WARN "   . self::SEPERATOR;
             case self::DEBUG:
-                return "$time - DEBUG ".self::SEPERATOR;
+                return "$time - DEBUG "  . self::SEPERATOR;
             case self::ERR:
-                return "$time - ERROR ".self::SEPERATOR;
+                return "$time - ERROR "  . self::SEPERATOR;
             default:
-                return "$time - LOG ".self::SEPERATOR;
+                return "$time - LOG "    . self::SEPERATOR;
         }
     }
 }
