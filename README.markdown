@@ -24,6 +24,7 @@ download [here](http://github.com/katzgrau/KLogger/downloads).
     $log->logInfo('Returned a million search results'); //Prints to the log file
     $log->logFatal('Oh dear.'); //Prints to the log file
     $log->logInfo('Here is an object', $obj); //Prints to the log file with a dump of the object
+    $log->logInfo('Here is a Group', 'Group name'); //Prints to the log file with a group before the message
 
 ## Goals
 

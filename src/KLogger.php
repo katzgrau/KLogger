@@ -58,7 +58,12 @@ class KLogger
      * print out objects etc. But we can't use NULL, 0, FALSE, etc, because those
      * are often the values the developers will test for. So we'll make one up.
      */
-    const NO_ARGUMENTS = 'KLogger::NO_ARGUMENTS';
+    const NO_ARGUMENTS          = 'KLogger::NO_ARGUMENTS';
+
+    /**
+     * Seperator used between log severity and message in the logs
+     */
+    const SEPERATOR             = '-->';
 
     /**
      * Current status of the log file
@@ -353,11 +358,28 @@ class KLogger
         if ($this->_severityThreshold >= $severity) {
             $status = $this->_getTimeLine($severity);
             
-            $line = "$status $line";
-            
             if($args !== self::NO_ARGUMENTS) {
-                /* Print the passed object value */
-                $line = $line . '; ' . var_export($args, true);
+                if (is_array($args) || is_object($args))
+                {
+                    $line = "$status $line";
+                    /* Print the passed object value */
+                    $line = $line . '; ' . var_export($args, true);
+                }
+                else
+                {
+                    if ($args)
+                    {
+                        $line = "$status " . $args . ' ' . self::SEPERATOR . " $line";
+                    }
+                    else
+                    {
+                        $line = "$status $line";
+                    }
+                }
+            }
+            else
+            {
+                $line = "$status $line";
             }
             
             $this->writeFreeFormLine($line . PHP_EOL);
@@ -386,25 +408,25 @@ class KLogger
 
         switch ($level) {
             case self::EMERG:
-                return "$time - EMERG -->";
+                return "$time - EMERG "  . self::SEPERATOR;
             case self::ALERT:
-                return "$time - ALERT -->";
+                return "$time - ALERT "  . self::SEPERATOR;
             case self::CRIT:
-                return "$time - CRIT -->";
+                return "$time - CRIT "   . self::SEPERATOR;
             case self::FATAL: # FATAL is an alias of CRIT
-                return "$time - FATAL -->";
-            case self::NOTICE:
-                return "$time - NOTICE -->";
+                return "$time - FATAL "  . self::SEPERATOR;
+            case self::NOTICE: 
+                return "$time - NOTICE " . self::SEPERATOR;
             case self::INFO:
-                return "$time - INFO -->";
+                return "$time - INFO "   . self::SEPERATOR;
             case self::WARN:
-                return "$time - WARN -->";
+                return "$time - WARN "   . self::SEPERATOR;
             case self::DEBUG:
-                return "$time - DEBUG -->";
+                return "$time - DEBUG "  . self::SEPERATOR;
             case self::ERR:
-                return "$time - ERROR -->";
+                return "$time - ERROR "  . self::SEPERATOR;
             default:
-                return "$time - LOG -->";
+                return "$time - LOG "    . self::SEPERATOR;
         }
     }
 }
