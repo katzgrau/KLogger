@@ -54,6 +54,12 @@ class KLogger
     const STATUS_LOG_CLOSED  = 3;
 
     /**
+     * argument formatting
+     */
+    const ARGS_FORMAT_VAR_EXPORT = 0;
+    const ARGS_FORMAT_PRINT_R = 1;
+
+    /**
      * We need a default argument value in order to add the ability to easily
      * print out objects etc. But we can't use NULL, 0, FALSE, etc, because those
      * are often the values the developers will test for. So we'll make one up.
@@ -117,6 +123,11 @@ class KLogger
      * @var array
      */
     private static $instances           = array();
+    /**
+     * Default argument formatting function
+     * @var integer
+     */
+    private static $_defaultArgumenFormatting = self::ARGS_FORMAT_PRINT_R;
 
     /**
      * Partially implements the Singleton pattern. Each $logDirectory gets one
@@ -357,7 +368,18 @@ class KLogger
             
             if($args !== self::NO_ARGUMENTS) {
                 /* Print the passed object value */
-                $line = $line . '; ' . var_export($args, true);
+                $line = $line . '; ';
+
+                switch (self::$_defaultArgumenFormatting) {
+                    case self::ARGS_FORMAT_PRINT_R:
+                        $line .= print_r($args, true);
+                        break;
+                    
+                    default:
+                    case self::ARGS_FORMAT_VAR_EXPORT:
+                        $line .= var_export($args, true);
+                        break;
+                }
             }
             
             $this->writeFreeFormLine($line . PHP_EOL);
