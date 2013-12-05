@@ -167,8 +167,9 @@ class KLogger
         $this->_logFilePath = $logDirectory
             . DIRECTORY_SEPARATOR
             . 'log_'
+            . strtolower($this->_getErrorSeverity($severity)) .'_'
             . date('Y-m-d')
-            . '.txt';
+            . '.log';
 
         $this->_severityThreshold = $severity;
         if (!file_exists($logDirectory)) {
@@ -407,4 +408,18 @@ class KLogger
                 return "$time - LOG -->";
         }
     }
+
+    /**
+     * Get error severity of a value / constant's name
+     * @param integer $value 
+     * @return string
+     */
+    private static function _getErrorSeverity($value)
+    {
+        $class = new ReflectionClass('KLogger');
+        $constants = $class->getConstants();
+        $constants = array_flip($constants);
+        return $constants[$value];
+    }
+    
 }
