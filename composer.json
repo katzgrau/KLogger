@@ -1,0 +1,14 @@
+{
+    "name": "katzgrau/klogger",
+    "description": "A Simple Logging Class For PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kenny Katzgrau",
+            "email": "katzgrau@gmail.com"
+        }
+    ],
+    "require": {
+
+    }
+}

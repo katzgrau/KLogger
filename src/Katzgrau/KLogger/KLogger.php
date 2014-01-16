@@ -1,5 +1,5 @@
 <?php
-
+namespace Katzgrau\KLogger;
 /**
  * Finally, a light, permissions-checking logging class.
  *
@@ -131,7 +131,7 @@ class KLogger
         if ($severity === false) {
             $severity = self::$_defaultSeverity;
         }
-        
+
         if ($logDirectory === false) {
             if (count(self::$instances) > 0) {
                 return current(self::$instances);
@@ -239,7 +239,7 @@ class KLogger
 
     /**
      * Sets the date format used by all instances of KLogger
-     * 
+     *
      * @param string $dateFormat Valid format string for date()
      */
     public static function setDateFormat($dateFormat)
@@ -273,7 +273,7 @@ class KLogger
 
     /**
      * Writes a $line to the log with a severity level of WARN. Generally
-     * corresponds to E_WARNING, E_USER_WARNING, E_CORE_WARNING, or 
+     * corresponds to E_WARNING, E_USER_WARNING, E_CORE_WARNING, or
      * E_COMPILE_WARNING
      *
      * @param string $line Information to log
@@ -352,14 +352,14 @@ class KLogger
     {
         if ($this->_severityThreshold >= $severity) {
             $status = $this->_getTimeLine($severity);
-            
+
             $line = "$status $line";
-            
+
             if($args !== self::NO_ARGUMENTS) {
                 /* Print the passed object value */
                 $line = $line . '; ' . var_export($args, true);
             }
-            
+
             $this->writeFreeFormLine($line . PHP_EOL);
         }
     }
