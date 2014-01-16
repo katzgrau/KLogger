@@ -18,9 +18,23 @@ This github project will host the development of the next version of KLogger.
 The original version of KLogger is tagged as version 0.1, and is available for
 download [here](http://github.com/katzgrau/KLogger/downloads).
 
+## Installation
+
+Use [composer](http://getcomposer.org) and add KLogger to your composer.json to use it:
+
+    require: {
+        ...
+        "katzgrau/klogger": "*",
+        ...
+    }
+
+Then hit `composer install` to get KLogger.
+
 ## Basic Usage
 
-    $log = new KLogger('/var/log/'); # Specify the log directory
+    use Katzgrau\KLogger\Klogger;
+
+    $log = new KLogger('/tmp/', KLogger::INFO); # Specify the log directory and minimum severity level
     $log->logInfo('Returned a million search results'); //Prints to the log file
     $log->logFatal('Oh dear.'); //Prints to the log file
     $log->logInfo('Here is an object', $obj); //Prints to the log file with a dump of the object
