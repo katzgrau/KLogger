@@ -8,6 +8,9 @@
             "email": "katzgrau@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-0": { "Katzgrau\\KLogger": "src" }
+    },
     "require": {
 
     }
