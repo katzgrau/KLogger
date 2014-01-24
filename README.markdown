@@ -1,78 +1,44 @@
-# KLogger: A Simple Logging Class For PHP
+# eklogger: A logging class for PHP
 
-A project written by Kenny Katzgrau and originally hosted at
-[CodeFury.net](http://codefury.net/projects/klogger/). This marks the
-development of a newer version of KLogger.
+eklogger is a simple yet powerful logging class for PHP
+
+eklogger is based on [KLogger](https://github.com/katzgrau/Klogger) written by
+[Kenny Katzgrau](http://codefury.net/projects/klogger/).
 
 ## About
 
-KLogger is an easy-to-use logging class for PHP. It supports standard log levels
+eklogger is an easy-to-use logging class for PHP. It supports standard log levels
 like debug, info, warn, error, and fatal. Additionally, it isn't naive about
-file permissions (which is expected). It was meant to be a class that you could
-quickly include into a project and have working right away.
+file permissions (which is expected). It also provides output to STDOUT.
 
-The class was written in 2008, but I have since received a number of emails both
-saying 'thanks' and asking me to add features.
-
-This github project will host the development of the next version of KLogger.
-The original version of KLogger is tagged as version 0.1, and is available for
-download [here](http://github.com/katzgrau/KLogger/downloads).
 
 ## Installation
 
-Use [composer](http://getcomposer.org) and add KLogger to your composer.json to use it:
+Use [composer](http://getcomposer.org) and add eklogger to your composer.json to use it:
 
     require: {
         ...
-        "katzgrau/klogger": "*",
+        "deralex/eklogger": "*",
         ...
     }
 
-Then hit `composer install` to get KLogger.
+Then hit `composer install` to get eklogger.
 
 ## Basic Usage
 
-    use Katzgrau\KLogger\Klogger;
+    use DerAlex\eklogger\EKLogger;
 
-    $log = new KLogger('/tmp/', KLogger::INFO); # Specify the log directory and minimum severity level
-    $log->logInfo('Returned a million search results'); //Prints to the log file
-    $log->logFatal('Oh dear.'); //Prints to the log file
-    $log->logInfo('Here is an object', $obj); //Prints to the log file with a dump of the object
+    $log = new EKLogger('/tmp/', EKLogger::INFO); # Specify the log directory and minimum severity level
+    $log->info('Returned a million search results'); //Prints to the log file
+    $log->fatal('Oh dear.'); //Prints to the log file
+    $log->info('Here is an object', $obj); //Prints to the log file with a dump of the object
 
-## Goals
-
-All of KLogger's internal goals have been met (there used to be a list here).
-If you have a feature request, send it to katzgrau@gmail.com
-
-## Why use KLogger?
-
-Why not? Just drop it in and go. If it saves you time and does what you need,
-go for it! Take a line from the book of our C-code fathers: "`build` upon the
-work of others".
-
-## Who uses KLogger?
-
-Klogger has been used in projects at:
-
-    * The University of Iowa
-    * The University of Laverne
-    * The New Jersey Institute of Technology
-    * Middlesex Hospital in NJ
-
-Additionally, it's been used in numerous projects, both commercial and personal.
-
-## Special Thanks
-
-Special thanks to all contributors, which right now includes three people:
-
-[Tim Kinnane](http://twitter.com/etherealtim)
-[Brian Fenton](http://github.com/fentie)
-[Cameron Will](https://github.com/cwill747)
 
 ## License
 
 The MIT License
 
+Copyright (c) 2014 Alexander Kluth <contact@alexanderkluth.com>
 Copyright (c) 2008-2010 Kenny Katzgrau <katzgrau@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -1,26 +1,8 @@
 <?php
-namespace Katzgrau\KLogger;
-/**
- * Finally, a light, permissions-checking logging class.
- *
- * Originally written for use with wpSearch
- *
- * Usage:
- * $log = new KLogger('/var/log/', KLogger::INFO);
- * $log->logInfo('Returned a million search results'); //Prints to the log file
- * $log->logFatal('Oh dear.'); //Prints to the log file
- * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
- *
- * @author  Kenny Katzgrau <katzgrau@gmail.com>
- * @since   July 26, 2008 — Last update July 1, 2012
- * @link    http://codefury.net
- * @version 0.2.0
- */
+namespace DerAlex\EKLogger;
 
-/**
- * Class documentation
- */
-class KLogger
+
+class EKLogger
 {
     /**
      * Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
@@ -40,11 +22,6 @@ class KLogger
      * Log nothing at all
      */
     const OFF    = 8;
-    /**
-     * Alias for CRIT
-     * @deprecated
-     */
-    const FATAL  = 2;
 
     /**
      * Internal status codes
@@ -122,9 +99,9 @@ class KLogger
      * Partially implements the Singleton pattern. Each $logDirectory gets one
      * instance.
      *
-     * @param string  $logDirectory File path to the logging directory
-     * @param integer $severity     One of the pre-defined severity constants
-     * @return KLogger
+     * @param bool|string $logDirectory File path to the logging directory
+     * @param bool|int $severity One of the pre-defined severity constants
+     * @return EKLogger
      */
     public static function instance($logDirectory = false, $severity = false)
     {
@@ -152,9 +129,9 @@ class KLogger
     /**
      * Class constructor
      *
-     * @param string  $logDirectory File path to the logging directory
-     * @param integer $severity     One of the pre-defined severity constants
-     * @return void
+     * @param string $logDirectory File path to the logging directory
+     * @param integer $severity One of the pre-defined severity constants
+     * @return \DerAlex\EKLogger\EKLogger
      */
     public function __construct($logDirectory, $severity)
     {
@@ -199,13 +176,15 @@ class KLogger
             fclose($this->_fileHandle);
         }
     }
+
     /**
      * Writes a $line to the log with a severity level of DEBUG
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logDebug($line, $args = self::NO_ARGUMENTS)
+    public function debug($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::DEBUG);
     }
@@ -252,9 +231,10 @@ class KLogger
      * can be used here, or it could be used with E_STRICT errors
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logInfo($line, $args = self::NO_ARGUMENTS)
+    public function info($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::INFO, $args);
     }
@@ -264,9 +244,10 @@ class KLogger
      * corresponds to E_STRICT, E_NOTICE, or E_USER_NOTICE errors
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logNotice($line, $args = self::NO_ARGUMENTS)
+    public function notice($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::NOTICE, $args);
     }
@@ -277,9 +258,10 @@ class KLogger
      * E_COMPILE_WARNING
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logWarn($line, $args = self::NO_ARGUMENTS)
+    public function warn($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::WARN, $args);
     }
@@ -289,33 +271,22 @@ class KLogger
      * with E_RECOVERABLE_ERROR
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logError($line, $args = self::NO_ARGUMENTS)
+    public function error($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::ERR, $args);
-    }
-
-    /**
-     * Writes a $line to the log with a severity level of FATAL. Generally
-     * corresponds to E_ERROR, E_USER_ERROR, E_CORE_ERROR, or E_COMPILE_ERROR
-     *
-     * @param string $line Information to log
-     * @return void
-     * @deprecated Use logCrit
-     */
-    public function logFatal($line, $args = self::NO_ARGUMENTS)
-    {
-        $this->log($line, self::FATAL, $args);
     }
 
     /**
      * Writes a $line to the log with a severity level of ALERT.
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logAlert($line, $args = self::NO_ARGUMENTS)
+    public function alert($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::ALERT, $args);
     }
@@ -324,9 +295,10 @@ class KLogger
      * Writes a $line to the log with a severity level of CRIT.
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logCrit($line, $args = self::NO_ARGUMENTS)
+    public function critical($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::CRIT, $args);
     }
@@ -335,9 +307,10 @@ class KLogger
      * Writes a $line to the log with a severity level of EMERG.
      *
      * @param string $line Information to log
+     * @param string $args
      * @return void
      */
-    public function logEmerg($line, $args = self::NO_ARGUMENTS)
+    public function emergency($line, $args = self::NO_ARGUMENTS)
     {
         $this->log($line, self::EMERG, $args);
     }
@@ -345,8 +318,9 @@ class KLogger
     /**
      * Writes a $line to the log with the given severity
      *
-     * @param string  $line     Text to add to the log
+     * @param string $line Text to add to the log
      * @param integer $severity Severity level of log message (use constants)
+     * @param string $args
      */
     public function log($line, $severity, $args = self::NO_ARGUMENTS)
     {
@@ -391,8 +365,6 @@ class KLogger
                 return "$time - ALERT -->";
             case self::CRIT:
                 return "$time - CRIT -->";
-            case self::FATAL: # FATAL is an alias of CRIT
-                return "$time - FATAL -->";
             case self::NOTICE:
                 return "$time - NOTICE -->";
             case self::INFO:
