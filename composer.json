@@ -1,0 +1,24 @@
+{
+    "name": "deralex/eklogger",
+    "description": "A simple yet powerful logging class",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Kluth",
+            "email": "contact@alexanderkluth.com"
+        },
+        {
+            "name": "Kenny Katzgrau",
+            "email": "katzgrau@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "DerAlex\\EKLogger": "src" }
+    },
+    "require": {
+
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.0.x-dev"
+    }
+}
