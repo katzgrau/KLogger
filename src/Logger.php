@@ -158,15 +158,28 @@ class Logger extends AbstractLogger
      */
     private function formatMessage($level, $message, $context)
     {
-        $originalTime = microtime(true);
-        $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
-        $date = new DateTime(date('Y-m-d H:i:s.'.$micro, $originalTime));
-        $time = $date->format($this->dateFormat);
         $level = strtoupper($level);
         if (! empty($context)) {
             $message .= PHP_EOL.$this->indent($this->contextToString($context)).PHP_EOL;
         }
-        return "[{$time}] [{$level}] {$message}".PHP_EOL;
+        return "[{$this->getTimestamp()}] [{$level}] {$message}".PHP_EOL;
+    }
+
+    /**
+     * Gets the correctly formatted Date/Time for the log entry.
+     * 
+     * PHP DateTime is dump, and you have to resort to trickery to get microseconds
+     * to work correctly, so here it is.
+     * 
+     * @return string
+     */
+    private function getTimestamp()
+    {
+        $originalTime = microtime(true);
+        $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
+        $date = new DateTime(date('Y-m-d H:i:s.'.$micro, $originalTime));
+
+        return $date->format($this->dateFormat);
     }
 
     /**
