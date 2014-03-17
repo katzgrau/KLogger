@@ -20,7 +20,7 @@ download [here](http://github.com/katzgrau/KLogger/downloads).
 
 ## Basic Usage
 
-    $log = new KLogger('/var/log/'); # Specify the log directory
+    $log = new Katzgrau\KLogger\Logger('/var/log/'); # Specify the log directory
     $log->logInfo('Returned a million search results'); //Prints to the log file
     $log->logFatal('Oh dear.'); //Prints to the log file
     $log->logInfo('Here is an object', $obj); //Prints to the log file with a dump of the object

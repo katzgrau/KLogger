@@ -14,5 +14,11 @@
             "name": "Dan Horrigan",
             "email": "dan@dhorrigan.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Katzgrau\\KLogger\\": "src/"
+        },
+        "classmap": ["src/"]
+    }
 }

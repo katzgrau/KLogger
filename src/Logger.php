@@ -1,4 +1,5 @@
 <?php
+namespace Katzgrau\KLogger;
 
 /**
  * Finally, a light, permissions-checking logging class.
@@ -6,7 +7,7 @@
  * Originally written for use with wpSearch
  *
  * Usage:
- * $log = new KLogger('/var/log/', KLogger::INFO);
+ * $log = new Katzgrau\KLogger\Logger('/var/log/', Katzgrau\KLogger\Logger::INFO);
  * $log->logInfo('Returned a million search results'); //Prints to the log file
  * $log->logFatal('Oh dear.'); //Prints to the log file
  * $log->logDebug('x = 5'); //Prints nothing due to current severity threshhold
@@ -20,7 +21,7 @@
 /**
  * Class documentation
  */
-class KLogger
+class Logger
 {
     /**
      * Error severity, from low to high. From BSD syslog RFC, secion 4.1.1
