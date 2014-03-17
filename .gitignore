@@ -2,3 +2,6 @@ src/test.php
 test/
 test/*
 test.php
+
+/vendor/
+composer.lock
