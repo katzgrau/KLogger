@@ -1,7 +1,10 @@
 {
     "name": "katzgrau/klogger",
+    "version": "1.0.0",
     "description": "A Simple Logging Class",
+    "keywords": ["logging"],
     "require": {
+        "php": ">=5.3",
         "psr/log": "1.0.0"
     },
     "require-dev": {
