@@ -33,7 +33,7 @@ In your `composer.json`:
 
 ``` php
 <?php
-$logger = new Katzgrau\KLogger\Logger('/var/log/', );
+$logger = new Katzgrau\KLogger\Logger('/var/log/');
 $logger->info('Returned a million search results');
 $logger->error('Oh dear.');
 $logger->debug('Got these users from the Database.', $users);
