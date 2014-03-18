@@ -1,7 +1,3 @@
-src/test.php
-test/
-test/*
-test.php
-
+/tests/logs/*.txt
 /vendor/
 composer.lock
