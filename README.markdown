@@ -1,34 +1,86 @@
 # KLogger: A Simple Logging Class For PHP
 
-A project written by Kenny Katzgrau and originally hosted at
-[CodeFury.net](http://codefury.net/projects/klogger/). This marks the
-development of a newer version of KLogger.
+A project written by Kenny Katzgrau and [Dan Horrigan](http://twitter.com/dhrrgn).
 
 ## About
 
-KLogger is an easy-to-use logging class for PHP. It supports standard log levels
-like debug, info, warn, error, and fatal. Additionally, it isn't naive about
+KLogger is an easy-to-use [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
+compliant logging class for PHP. It isn't naive about
 file permissions (which is expected). It was meant to be a class that you could
 quickly include into a project and have working right away.
 
-The class was written in 2008, but I have since received a number of emails both
-saying 'thanks' and asking me to add features.
+## Installation
 
-This github project will host the development of the next version of KLogger.
-The original version of KLogger is tagged as version 0.1, and is available for
-download [here](http://github.com/katzgrau/KLogger/downloads).
+### Composer
+
+From the Command Line:
+
+```
+composer require katzgrau/klogger:1.0.*
+```
+
+In your `composer.json`:
+
+``` json
+{
+    "require": {
+        "katzgrau/klogger": "1.0.*"
+    }
+}
+```
 
 ## Basic Usage
 
-    $log = new Katzgrau\KLogger\Logger('/var/log/'); # Specify the log directory
-    $log->logInfo('Returned a million search results'); //Prints to the log file
-    $log->logFatal('Oh dear.'); //Prints to the log file
-    $log->logInfo('Here is an object', $obj); //Prints to the log file with a dump of the object
+``` php
+<?php
+$logger = new Katzgrau\KLogger\Logger('/var/log/', );
+$logger->info('Returned a million search results');
+$logger->error('Oh dear.');
+$logger->debug('Got these users from the Database.', $users);
+```
 
-## Goals
+## PSR-3 Compliant
 
-All of KLogger's internal goals have been met (there used to be a list here).
-If you have a feature request, send it to katzgrau@gmail.com
+KLogger is [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
+compliant. This means it implements the `Psr\Log\LoggerInterface`.
+
+[See Here for the interface definition.](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#3-psrlogloggerinterface)
+
+## Setting the Log Level Threshold
+
+You can use the `Psr\Log\LogLevel` constants to set Log Level Threshold, so that
+any messages below that level, will not be logged.
+
+### Default Level
+
+The default level is `DEBUG`, which means everything will be logged.
+
+### Available Levels
+
+``` php
+<?php
+use Psr\Log\LogLevel;
+
+// These are in order of highest priority to lowest.
+LogLevel::EMERGENCY;
+LogLevel::ALERT;
+LogLevel::CRITICAL;
+LogLevel::ERROR;
+LogLevel::WARNING;
+LogLevel::NOTICE;
+LogLevel::INFO;
+LogLevel::DEBUG;
+```
+
+### Example
+
+``` php
+<?php
+// The 
+$logger = new Katzgrau\KLogger\Logger('/var/log/', Psr\Log\LogLevel::WARNING);
+$logger->error('Uh Oh!'); // Will be logged
+$logger->info('Something Happened Here'); // Will be NOT logged
+```
 
 ## Why use KLogger?
 
@@ -49,8 +101,9 @@ Additionally, it's been used in numerous projects, both commercial and personal.
 
 ## Special Thanks
 
-Special thanks to all contributors, which right now includes three people:
+Special thanks to all contributors:
 
+[Dan Horrigan](http://twitter.com/dhrrgn)
 [Tim Kinnane](http://twitter.com/etherealtim)
 [Brian Fenton](http://github.com/fentie)
 [Cameron Will](https://github.com/cwill747)
@@ -59,7 +112,7 @@ Special thanks to all contributors, which right now includes three people:
 
 The MIT License
 
-Copyright (c) 2008-2010 Kenny Katzgrau <katzgrau@gmail.com>
+Copyright (c) 2008-2014 Kenny Katzgrau <katzgrau@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
