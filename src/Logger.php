@@ -160,7 +160,7 @@ class Logger extends AbstractLogger
     {
         $level = strtoupper($level);
         if (! empty($context)) {
-            $message .= PHP_EOL.$this->indent($this->contextToString($context)).PHP_EOL;
+            $message .= PHP_EOL.$this->indent($this->contextToString($context));
         }
         return "[{$this->getTimestamp()}] [{$level}] {$message}".PHP_EOL;
     }
