@@ -33,10 +33,42 @@ In your `composer.json`:
 
 ``` php
 <?php
-$logger = new Katzgrau\KLogger\Logger('/var/log/');
+
+require 'vendor/autoload.php';
+
+$users = [
+    [
+        'name' => 'Kenny Katzgrau',
+        'username' => 'katzgrau',
+    ],
+    [
+        'name' => 'Dan Horrigan',
+        'username' => 'dhrrgn',
+    ],
+];
+
+$logger = new Katzgrau\KLogger\Logger(__DIR__.'/logs');
 $logger->info('Returned a million search results');
 $logger->error('Oh dear.');
 $logger->debug('Got these users from the Database.', $users);
+```
+
+### Output
+
+```
+[2014-03-18 19:28:34.576643] [INFO] Returned a million search results
+[2014-03-18 19:28:34.576750] [ERROR] Oh dear.
+[2014-03-18 19:28:34.576946] [DEBUG] Got these users from the Database.
+    array(
+        0 => array(
+            'name' => 'Kenny Katzgrau',
+            'username' => 'katzgrau',
+        ),
+        1 => array(
+            'name' => 'Dan Horrigan',
+            'username' => 'dhrrgn',
+        ),
+    )
 ```
 
 ## PSR-3 Compliant
