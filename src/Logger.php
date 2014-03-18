@@ -200,18 +200,21 @@ class Logger extends AbstractLogger
      */
     private function contextToString($context)
     {
-        $export = var_export($context, true);
-
-        // var_export is ugly, let's pretty it up a bit.
-        return preg_replace(array(
-            '/=>\s+([a-zA-Z])/im',
-            '/array\(\s+\)/im',
-            '/^  |\G  /m',
-        ), array(
-            '=> $1',
-            'array()',
-            '    ',
-        ), str_replace('array (', 'array(', $export));
+        $export = '';
+        foreach ($context as $key => $value) {
+            $export .= "{$key}: ";
+            $export .= preg_replace(array(
+                '/=>\s+([a-zA-Z])/im',
+                '/array\(\s+\)/im',
+                '/^  |\G  /m',
+            ), array(
+                '=> $1',
+                'array()',
+                '    ',
+            ), str_replace('array (', 'array(', var_export($value, true)));
+            $export .= PHP_EOL;
+        }
+        return str_replace('\\\\', '\\', $export);
     }
 
     /**
