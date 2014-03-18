@@ -1,6 +1,6 @@
-# KLogger: A Simple Logging Class For PHP
+# KLogger: Simple Logging for PHP
 
-A project written by Kenny Katzgrau and [Dan Horrigan](http://twitter.com/dhrrgn).
+A project written by [Kenny Katzgrau](http://twitter.com/katzgrau) and [Dan Horrigan](http://twitter.com/dhrrgn).
 
 ## About
 
@@ -103,10 +103,10 @@ Additionally, it's been used in numerous projects, both commercial and personal.
 
 Special thanks to all contributors:
 
-[Dan Horrigan](http://twitter.com/dhrrgn)
-[Tim Kinnane](http://twitter.com/etherealtim)
-[Brian Fenton](http://github.com/fentie)
-[Cameron Will](https://github.com/cwill747)
+* [Dan Horrigan](http://twitter.com/dhrrgn)
+* [Tim Kinnane](http://twitter.com/etherealtim)
+* [Brian Fenton](http://github.com/fentie)
+* [Cameron Will](https://github.com/cwill747)
 
 ## License
 
