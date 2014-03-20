@@ -56,18 +56,16 @@ $logger->debug('Got these users from the Database.', $users);
 ### Output
 
 ```
-[2014-03-18 19:28:34.576643] [INFO] Returned a million search results
-[2014-03-18 19:28:34.576750] [ERROR] Oh dear.
-[2014-03-18 19:28:34.576946] [DEBUG] Got these users from the Database.
-    array(
-        0 => array(
-            'name' => 'Kenny Katzgrau',
-            'username' => 'katzgrau',
-        ),
-        1 => array(
-            'name' => 'Dan Horrigan',
-            'username' => 'dhrrgn',
-        ),
+[2014-03-20 3:35:43.762437] [INFO] Returned a million search results
+[2014-03-20 3:35:43.762578] [ERROR] Oh dear.
+[2014-03-20 3:35:43.762795] [DEBUG] Got these users from the Database.
+    0: array(
+        'name' => 'Kenny Katzgrau',
+        'username' => 'katzgrau',
+    )
+    1: array(
+        'name' => 'Dan Horrigan',
+        'username' => 'dhrrgn',
     )
 ```
 

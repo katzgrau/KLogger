@@ -214,7 +214,7 @@ class Logger extends AbstractLogger
             ), str_replace('array (', 'array(', var_export($value, true)));
             $export .= PHP_EOL;
         }
-        return str_replace('\\\\', '\\', $export);
+        return str_replace(array('\\\\', '\\\''), array('\\', '\''), rtrim($export));
     }
 
     /**
