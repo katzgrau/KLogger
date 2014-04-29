@@ -76,7 +76,7 @@ class Logger extends AbstractLogger
      * @param integer $logLevelThreshold  The LogLevel Threshold
      * @return void
      */
-    public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG)
+    public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG, $logFilePrefix = 'log_')
     {
         $this->logLevelThreshold = $logLevelThreshold;
 
@@ -85,7 +85,7 @@ class Logger extends AbstractLogger
             mkdir($logDirectory, $this->defaultPermissions, true);
         }
 
-        $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.'log_'.date('Y-m-d').'.txt';
+        $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$logFilePrefix.date('Y-m-d').'.txt';
         if (file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
             throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
         }
