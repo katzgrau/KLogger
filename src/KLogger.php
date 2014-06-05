@@ -117,21 +117,48 @@ class KLogger
      * @var array
      */
     private static $instances           = array();
+    /**
+     * File extension to use
+     * @var string
+     */
+    private static $_logFileExt = '.log';
+    /**
+     * Log file name (will be appended with a date and a file extension)
+     * @var string
+     */
+    private static $_logFileName = 'log_';
+    /**
+     * How many days to keep a log file
+     * @var int
+     */
+    private static $_removeLogFileIn = 15;
 
     /**
      * Partially implements the Singleton pattern. Each $logDirectory gets one
      * instance.
      *
-     * @param string  $logDirectory File path to the logging directory
+     * @param string $logDirectory File path to the logging directory
      * @param integer $severity     One of the pre-defined severity constants
+     * @param string $logFileName Log file name
+     * @param string $logFileExt Log file extension
+     * @param string $removeLogFileIn For how many days to keep each log file
      * @return KLogger
      */
-    public static function instance($logDirectory = false, $severity = false)
+    public static function instance($logDirectory = false, $severity = false, $logFileName = false, $logFileExt = false, $removeLogFileIn = false)
     {
         if ($severity === false) {
             $severity = self::$_defaultSeverity;
         }
-        
+        if ($logFileName === false) {
+            $logFileName = self::$_logFileName;
+        }
+        if (!$logFileExt === false) {
+            $logFileExt = self::$_logFileExt;
+        }
+        if (!$removeLogFileIn === false) {
+            $removeLogFileIn = self::$_removeLogFileIn;
+        }
+
         if ($logDirectory === false) {
             if (count(self::$instances) > 0) {
                 return current(self::$instances);
@@ -144,7 +171,7 @@ class KLogger
             return self::$instances[$logDirectory];
         }
 
-        self::$instances[$logDirectory] = new self($logDirectory, $severity);
+        self::$instances[$logDirectory] = new self($logDirectory, $severity, $logFileName, $logFileExt, $removeLogFileIn);
 
         return self::$instances[$logDirectory];
     }
@@ -152,29 +179,43 @@ class KLogger
     /**
      * Class constructor
      *
-     * @param string  $logDirectory File path to the logging directory
-     * @param integer $severity     One of the pre-defined severity constants
+     * @param string $logDirectory File path to the logging directory
+     * @param integer $severity One of the pre-defined severity constants
+     * @param string $logFileName Log file name
+     * @param string $logFileExt Log file extension
+     * @param string $removeLogFileIn For how many days to keep each log file
      * @return void
      */
-    public function __construct($logDirectory, $severity)
+    public function __construct($logDirectory, $severity, $logFileName = false, $logFileExt = false, $removeLogFileIn = false)
     {
         $logDirectory = rtrim($logDirectory, '\\/');
 
         if ($severity === self::OFF) {
             return;
         }
+        if ($logFileName !== false) {
+            self::$_logFileName = $logFileName;
+        }
+        if ($logFileExt !== false) {
+            self::$_logFileExt = $logFileExt;
+        }
+        if ($removeLogFileIn !== false) {
+            self::$_removeLogFileIn = $removeLogFileIn;
+        }
 
         $this->_logFilePath = $logDirectory
             . DIRECTORY_SEPARATOR
-            . 'log_'
+            . self::$_logFileName
             . date('Y-m-d')
-            . '.txt';
+            . self::$_logFileExt;
 
         $this->_severityThreshold = $severity;
         if (!file_exists($logDirectory)) {
             mkdir($logDirectory, self::$_defaultPermissions, true);
         }
-
+        if(!file_exists($this->_logFilePath)){
+            $this->removeOutdatedLogFiles($logDirectory, self::$_removeLogFileIn, self::$_logFileExt);
+        }
         if (file_exists($this->_logFilePath) && !is_writable($this->_logFilePath)) {
             $this->_logStatus = self::STATUS_OPEN_FAILED;
             $this->_messageQueue[] = $this->_messages['writefail'];
@@ -199,6 +240,7 @@ class KLogger
             fclose($this->_fileHandle);
         }
     }
+
     /**
      * Writes a $line to the log with a severity level of DEBUG
      *
@@ -353,7 +395,7 @@ class KLogger
         if ($this->_severityThreshold >= $severity) {
             $status = $this->_getTimeLine($severity);
             
-            $line = "$status $line";
+            $line = $status . PHP_EOL . $line;
             
             if($args !== self::NO_ARGUMENTS) {
                 /* Print the passed object value */
@@ -378,6 +420,30 @@ class KLogger
                 $this->_messageQueue[] = $this->_messages['writefail'];
             }
         }
+    }
+
+    /**
+     * Removes outdated log files
+     * @param string $logDirectory in which directory to look up
+     * @param integer $term how old should be files to be removed, in days
+     * @param string $ext remove files with this extension only
+     */
+    protected function removeOutdatedLogFiles($logDirectory, $term, $ext)
+    {
+        $dir = opendir($logDirectory.DIRECTORY_SEPARATOR) or die("Could not open directory.");
+        $cutoff = mktime(0, 0, 0, date("m"), date("d") - $term, date("Y"));
+        chdir($logDirectory);
+        while (($file = readdir($dir)) !== false) {
+            if (
+                is_file($file) AND $file !== '.'
+                               AND $file !== '..'
+                               AND pathinfo($file, PATHINFO_EXTENSION) === $ext
+                               AND filemtime($file) < $cutoff
+            ) {
+                unlink($file);
+            }
+        }
+        closedir($dir);
     }
 
     private function _getTimeLine($level)
