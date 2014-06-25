@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Updated by <yugenekr@gmail.com> . Outdated files removal is added.
+ *
  * Finally, a light, permissions-checking logging class.
  *
  * Originally written for use with wpSearch
@@ -121,7 +123,7 @@ class KLogger
      * File extension to use
      * @var string
      */
-    private static $_logFileExt = '.log';
+    private static $_logFileExt = 'log';
     /**
      * Log file name (will be appended with a date and a file extension)
      * @var string
@@ -207,7 +209,7 @@ class KLogger
             . DIRECTORY_SEPARATOR
             . self::$_logFileName
             . date('Y-m-d')
-            . self::$_logFileExt;
+            . '.' . self::$_logFileExt;
 
         $this->_severityThreshold = $severity;
         if (!file_exists($logDirectory)) {
@@ -434,12 +436,7 @@ class KLogger
         $cutoff = mktime(0, 0, 0, date("m"), date("d") - $term, date("Y"));
         chdir($logDirectory);
         while (($file = readdir($dir)) !== false) {
-            if (
-                is_file($file) AND $file !== '.'
-                               AND $file !== '..'
-                               AND pathinfo($file, PATHINFO_EXTENSION) === $ext
-                               AND filemtime($file) < $cutoff
-            ) {
+            if (pathinfo($file, PATHINFO_EXTENSION) === $ext && filemtime($file) < $cutoff) {
                 unlink($file);
             }
         }
