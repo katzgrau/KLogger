@@ -78,7 +78,7 @@ class Logger extends AbstractLogger
      */
     public function __construct($logDirectory, $logName = 'default', $logLevelThreshold = LogLevel::DEBUG)
     {
-		$logName = ($logName == 'default') : 'log_'.date('Y-m-d').'.txt' ? $logName;
+		$logName = ($logName == 'default') ? 'log_'.date('Y-m-d').'.txt' : $logName;
 		
         $this->logLevelThreshold = $logLevelThreshold;
 
