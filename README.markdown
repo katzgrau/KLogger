@@ -9,6 +9,8 @@ compliant logging class for PHP. It isn't naive about
 file permissions (which is expected). It was meant to be a class that you could
 quickly include into a project and have working right away.
 
+If you need a logger that supports PHP < 5.3, see [past releases](https://github.com/katzgrau/KLogger/releases).
+
 ## Installation
 
 ### Composer
