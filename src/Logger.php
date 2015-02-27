@@ -18,8 +18,8 @@ use Psr\Log\LogLevel;
  * $log->debug('x = 5'); //Prints nothing due to current severity threshhold
  *
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
- * @since   July 26, 2008 — Last update July 1, 2012
- * @link    http://codefury.net
+ * @since   July 26, 2008
+ * @link    https://github.com/katzgrau/KLogger
  * @version 0.2.0
  */
 
