@@ -73,8 +73,7 @@ class Logger extends AbstractLogger
      * Class constructor
      *
      * @param string  $logDirectory       File path to the logging directory
-     * @param integer $logLevelThreshold  The LogLevel Threshold
-     * @return void
+     * @param string $logLevelThreshold  The LogLevel Threshold
      */
     public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG)
     {
@@ -119,7 +118,7 @@ class Logger extends AbstractLogger
     /**
      * Sets the Log Level Threshold
      * 
-     * @param string $dateFormat Valid format string for date()
+     * @param string $logLevelThreshold Valid format string for date()
      */
     public function setLogLevelThreshold($logLevelThreshold)
     {
@@ -146,7 +145,7 @@ class Logger extends AbstractLogger
     /**
      * Writes a line to the log without prepending a status or timestamp
      *
-     * @param string $line Line to write to the log
+     * @param string $message Line to write to the log
      * @return void
      */
     public function write($message)
