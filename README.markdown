@@ -130,10 +130,11 @@ Here's the full list:
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| extension | 'txt' | The log file extension |
-| prefix  | 'log_' | The log file prefix |
 | dateFormat | 'Y-m-d G:i:s.u' | The format of the date in the start of the log lone (php formatted) |
+| extension | 'txt' | The log file extension |
+| filename | [prefix][date].[extension] | Set the filename for the log file. **This overrides the prefix and extention options.** |
 | flushFrequency | `false` (disabled) | How many lines to flush the output buffer after |
+| prefix  | 'log_' | The log file prefix |
 
 
 ## Why use KLogger?

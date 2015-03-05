@@ -38,10 +38,11 @@ class Logger extends AbstractLogger
      * @var array
      */
     private $options = array (
-        'prefix' => 'log_',
         'extension' => 'txt',
         'dateFormat' => 'Y-m-d G:i:s.u',
-        'flushFrequency' => false
+        'filename' => false,
+        'flushFrequency' => false,
+        'prefix' => 'log_'
     );
 
     /**
@@ -115,7 +116,14 @@ class Logger extends AbstractLogger
             mkdir($logDirectory, $this->defaultPermissions, true);
         }
 
-        $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
+        // Check for a set filename. In that case ignore prefix and extension
+        if ($this->options['filename']) {
+            $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'];
+        } else {
+            $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
+        }
+
+
         if (file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
             throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
         }
