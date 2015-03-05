@@ -114,6 +114,28 @@ $logger->error('Uh Oh!'); // Will be logged
 $logger->info('Something Happened Here'); // Will be NOT logged
 ```
 
+### Additional Options
+
+KLogger supports additional options via third parameter in the constructor:
+
+``` php
+<?php
+// Example
+$logger = new Katzgrau\KLogger\Logger('/var/log/', Psr\Log\LogLevel::WARNING, array (
+    'extension' => 'log', // changes the log file extension
+));
+```
+
+Here's the full list:
+
+| Option | Default | Description |
+| ------ | ------- | ----------- |
+| extension | 'txt' | The log file extension |
+| prefix  | 'log_' | The log file prefix |
+| dateFormat | 'Y-m-d G:i:s.u' | The format of the date in the start of the log lone (php formatted) |
+| flushFrequency | `false` (disabled) | How many lines to flush the output buffer after |
+
+
 ## Why use KLogger?
 
 Why not? Just drop it in and go. If it saves you time and does what you need,
