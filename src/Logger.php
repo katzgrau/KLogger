@@ -29,6 +29,22 @@ use Psr\Log\LogLevel;
 class Logger extends AbstractLogger
 {
     /**
+     * KLogger options
+     *  Anything options not considered 'core' to the logging library should be
+     *  settable view the third parameter in the constructor
+     *
+     *  Core options include the log file path and the log threshold
+     *
+     * @var array
+     */
+    private $options = array (
+        'prefix' => 'log_',
+        'extension' => 'txt',
+        'dateFormat' => 'Y-m-d G:i:s.u',
+        'flushFrequency' => false
+    );
+
+    /**
      * Path to the log file
      * @var string
      */
@@ -40,6 +56,16 @@ class Logger extends AbstractLogger
      */
     private $logLevelThreshold = LogLevel::DEBUG;
 
+    /**
+     * The number of lines logged in this instance's lifetime
+     * @var int
+     */
+    private $logLineCount = 0;
+
+    /**
+     * Log Levels
+     * @var array
+     */
     private $logLevels = array(
         LogLevel::EMERGENCY => 0,
         LogLevel::ALERT     => 1,
@@ -58,10 +84,11 @@ class Logger extends AbstractLogger
     private $fileHandle = null;
 
     /**
-     * Valid PHP date() format string for log timestamps
+     * This holds the last line logged to the logger
+     *  Used for unit tests
      * @var string
      */
-    private $dateFormat = 'Y-m-d G:i:s.u';
+    private $lastLine = '';
 
     /**
      * Octal notation for default permissions of the log file
@@ -70,25 +97,29 @@ class Logger extends AbstractLogger
     private $defaultPermissions = 0777;
 
     /**
+    /**
      * Class constructor
      *
-     * @param string  $logDirectory       File path to the logging directory
+     * @param string $logDirectory       File path to the logging directory
      * @param string $logLevelThreshold  The LogLevel Threshold
+     * @param string $logFilePrefix      The prefix for the log file name
+     * @param string $logFileExt         The extension for the log file
      */
-    public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG)
+    public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG, $options = array())
     {
         $this->logLevelThreshold = $logLevelThreshold;
+        $this->options = array_merge($this->options, $options);
 
         $logDirectory = rtrim($logDirectory, '\\/');
         if (! file_exists($logDirectory)) {
             mkdir($logDirectory, $this->defaultPermissions, true);
         }
 
-        $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.'log_'.date('Y-m-d').'.txt';
+        $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
         if (file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
             throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
         }
-        
+
         $this->fileHandle = fopen($this->logFilePath, 'a');
         if ( ! $this->fileHandle) {
             throw new RuntimeException('The file could not be opened. Check permissions.');
@@ -112,7 +143,7 @@ class Logger extends AbstractLogger
      */
     public function setDateFormat($dateFormat)
     {
-        $this->dateFormat = $dateFormat;
+        $this->options['dateFormat'] = $dateFormat;
     }
 
     /**
@@ -153,8 +184,35 @@ class Logger extends AbstractLogger
         if (! is_null($this->fileHandle)) {
             if (fwrite($this->fileHandle, $message) === false) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
+            } else {
+                $this->lastLine = trim($message);
+                $this->logLineCount++;
+
+                if ($this->options['flushFrequency'] && $this->logLineCount % $this->options['flushFrequency'] == 0) {
+                    fflush($this->fileHandle);
+                }
             }
         }
+    }
+
+    /**
+     * Get the file path that the log is currently writing to
+     *
+     * @return string
+     */
+    public function getLogFilePath()
+    {
+        return $this->logFilePath;
+    }
+
+    /**
+     * Get the last line logged to the log file
+     *
+     * @return string
+     */
+    public function getLastLogLine()
+    {
+        return $this->lastLine;
     }
 
     /**
@@ -188,7 +246,7 @@ class Logger extends AbstractLogger
         $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
         $date = new DateTime(date('Y-m-d H:i:s.'.$micro, $originalTime));
 
-        return $date->format($this->dateFormat);
+        return $date->format($this->options['dateFormat']);
     }
 
     /**
