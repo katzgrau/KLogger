@@ -197,7 +197,7 @@ class Logger extends AbstractLogger
                 $this->lastLine = trim($message);
                 $this->logLineCount++;
 
-                if ($this->options['flushFrequency'] && $this->logLineCount % $this->options['flushFrequency'] == 0) {
+                if ($this->options['flushFrequency'] && $this->logLineCount % $this->options['flushFrequency'] === 0) {
                     fflush($this->fileHandle);
                 }
             }
