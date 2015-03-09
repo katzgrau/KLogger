@@ -49,7 +49,7 @@ class Logger extends AbstractLogger
      * Path to the log file
      * @var string
      */
-    private $logFilePath = null;
+    private $logFilePath;
 
     /**
      * Current minimum logging threshold
