@@ -82,7 +82,7 @@ class Logger extends AbstractLogger
      * This holds the file handle for this instance's log file
      * @var resource
      */
-    private $fileHandle = null;
+    private $fileHandle;
 
     /**
      * This holds the last line logged to the logger
