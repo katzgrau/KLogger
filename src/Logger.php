@@ -75,7 +75,7 @@ class Logger extends AbstractLogger
         LogLevel::WARNING   => 4,
         LogLevel::NOTICE    => 5,
         LogLevel::INFO      => 6,
-        LogLevel::DEBUG     => 7,
+        LogLevel::DEBUG     => 7
     );
 
     /**
