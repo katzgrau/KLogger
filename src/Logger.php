@@ -272,11 +272,11 @@ class Logger extends AbstractLogger
             $export .= preg_replace(array(
                 '/=>\s+([a-zA-Z])/im',
                 '/array\(\s+\)/im',
-                '/^  |\G  /m',
+                '/^  |\G  /m'
             ), array(
                 '=> $1',
                 'array()',
-                '    ',
+                '    '
             ), str_replace('array (', 'array(', var_export($value, true)));
             $export .= PHP_EOL;
         }
