@@ -190,7 +190,7 @@ class Logger extends AbstractLogger
      */
     public function write($message)
     {
-        if (! is_null($this->fileHandle)) {
+        if (null !== $this->fileHandle) {
             if (fwrite($this->fileHandle, $message) === false) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             } else {
