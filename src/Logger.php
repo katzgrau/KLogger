@@ -49,7 +49,7 @@ class Logger extends AbstractLogger
      * Path to the log file
      * @var string
      */
-    private $logFilePath = null;
+    private $logFilePath;
 
     /**
      * Current minimum logging threshold
@@ -75,14 +75,14 @@ class Logger extends AbstractLogger
         LogLevel::WARNING   => 4,
         LogLevel::NOTICE    => 5,
         LogLevel::INFO      => 6,
-        LogLevel::DEBUG     => 7,
+        LogLevel::DEBUG     => 7
     );
 
     /**
      * This holds the file handle for this instance's log file
      * @var resource
      */
-    private $fileHandle = null;
+    private $fileHandle;
 
     /**
      * This holds the last line logged to the logger
@@ -98,15 +98,16 @@ class Logger extends AbstractLogger
     private $defaultPermissions = 0777;
 
     /**
-    /**
      * Class constructor
      *
-     * @param string $logDirectory       File path to the logging directory
-     * @param string $logLevelThreshold  The LogLevel Threshold
-     * @param string $logFilePrefix      The prefix for the log file name
-     * @param string $logFileExt         The extension for the log file
+     * @param string $logDirectory      File path to the logging directory
+     * @param string $logLevelThreshold The LogLevel Threshold
+     * @param array  $options
+     *
+     * @internal param string $logFilePrefix The prefix for the log file name
+     * @internal param string $logFileExt The extension for the log file
      */
-    public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG, $options = array())
+    public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG, array $options = array())
     {
         $this->logLevelThreshold = $logLevelThreshold;
         $this->options = array_merge($this->options, $options);
@@ -189,14 +190,14 @@ class Logger extends AbstractLogger
      */
     public function write($message)
     {
-        if (! is_null($this->fileHandle)) {
+        if (null !== $this->fileHandle) {
             if (fwrite($this->fileHandle, $message) === false) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             } else {
                 $this->lastLine = trim($message);
                 $this->logLineCount++;
 
-                if ($this->options['flushFrequency'] && $this->logLineCount % $this->options['flushFrequency'] == 0) {
+                if ($this->options['flushFrequency'] && $this->logLineCount % $this->options['flushFrequency'] === 0) {
                     fflush($this->fileHandle);
                 }
             }
@@ -271,11 +272,11 @@ class Logger extends AbstractLogger
             $export .= preg_replace(array(
                 '/=>\s+([a-zA-Z])/im',
                 '/array\(\s+\)/im',
-                '/^  |\G  /m',
+                '/^  |\G  /m'
             ), array(
                 '=> $1',
                 'array()',
-                '    ',
+                '    '
             ), str_replace('array (', 'array(', var_export($value, true)));
             $export .= PHP_EOL;
         }
