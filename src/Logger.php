@@ -42,7 +42,9 @@ class Logger extends AbstractLogger
         'dateFormat' => 'Y-m-d G:i:s.u',
         'filename' => false,
         'flushFrequency' => false,
-        'prefix' => 'log_'
+        'prefix' => 'log_',
+        'hostname' => null,
+        'appname' => null
     );
 
     /**
@@ -197,6 +199,7 @@ class Logger extends AbstractLogger
     public function write($message)
     {
         if (null !== $this->fileHandle) {
+            $message = preg_replace("/[[:blank:]]+/"," ", $message);
             if (fwrite($this->fileHandle, $message) === false) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             } else {
@@ -244,7 +247,7 @@ class Logger extends AbstractLogger
         if (! empty($context)) {
             $message .= PHP_EOL.$this->indent($this->contextToString($context));
         }
-        return "[{$this->getTimestamp()}] [{$level}] {$message}".PHP_EOL;
+        return "[{$this->getTimestamp()}] {$this->getHostname()} {$this->getAppName()} [{$level}] {$message}".PHP_EOL;
     }
 
     /**
@@ -262,6 +265,36 @@ class Logger extends AbstractLogger
         $date = new DateTime(date('Y-m-d H:i:s.'.$micro, $originalTime));
 
         return $date->format($this->options['dateFormat']);
+    }
+
+    /**
+     * Gets the hostname of the server
+     *
+     * @return string
+     */
+    public function getHostname()
+    {
+        if($this->options['hostname']) {
+            return '['.getHostname().']';
+        }
+        else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the appname that is option in $options array
+     *
+     * @return string
+     */
+    public function getAppName()
+    {
+        if($this->options['appname']) {
+            return '['.$this->options['appname'].']';
+        }
+        else {
+            return null;
+        }
     }
 
     /**
