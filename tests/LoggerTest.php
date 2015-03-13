@@ -110,5 +110,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
     public function tearDown() {
         #@unlink($this->logger->getLogFilePath());
         #@unlink($this->errLogger->getLogFilePath());
+        #@unlink($this->hostNameLogger->getLogFilePath());
+        #@unlink($this->appNameLogger->getLogFilePath());
     }
 }
