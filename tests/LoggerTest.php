@@ -51,14 +51,14 @@ class LoggerTest extends PHPUnit_Framework_TestCase
 
     public function testGetHostname()
     {
-        $this->assertNull(null, $this->logger->getHostname());
-        $this->assertNull(null, $this->hostNameLogger->getHostname());
+        $this->assertNull($this->logger->getHostname());
+        $this->assertNotNull($this->hostNameLogger->getHostname());
     }
 
     public function testGetAppName()
     {
-        $this->assertNull(null, $this->logger->getAppName());
-        $this->assertNull(null, $this->hostNameLogger->getAppName());
+        $this->assertNull($this->logger->getAppName());
+        $this->assertNotNull($this->appNameLogger->getAppName());
     }
 
     public function testWritesBasicLogs()
