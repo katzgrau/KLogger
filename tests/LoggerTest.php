@@ -9,6 +9,8 @@ class LoggerTest extends PHPUnit_Framework_TestCase
 
     private $logger;
     private $errLogger;
+    private $hostNameLogger;
+    private $appNameLogger;
 
     public function setUp()
     {
@@ -18,6 +20,16 @@ class LoggerTest extends PHPUnit_Framework_TestCase
             'extension' => 'log',
             'prefix' => 'error_',
             'flushFrequency' => 1
+        ));
+        $this->hostNameLogger = new Logger($this->logPath, LogLevel::DEBUG, array (
+            'hostname' => gethostname(),
+            'extension' => 'log',
+            'prefix' => 'hostname_logger_'
+        ));
+        $this->appNameLogger = new Logger($this->logPath, LogLevel::DEBUG, array (
+            'appname' => 'LoggerTEst',
+            'extension' => 'log',
+            'prefix' => 'appname_logger_'
         ));
     }
 
@@ -37,18 +49,35 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $this->assertStringStartsWith('error_', $filename);
     }
 
+    public function testGetHostname()
+    {
+        $this->assertNull(null, $this->logger->getHostname());
+        $this->assertNull(null, $this->hostNameLogger->getHostname());
+    }
+
+    public function testGetAppName()
+    {
+        $this->assertNull(null, $this->logger->getAppName());
+        $this->assertNull(null, $this->hostNameLogger->getAppName());
+    }
+
     public function testWritesBasicLogs()
     {
-        $this->logger->log(LogLevel::DEBUG, 'This is a test');
-        $this->errLogger->log(LogLevel::ERROR, 'This is a test');
+        $this->logger->log(LogLevel::DEBUG, 'This is a test for a plain logger');
+        $this->errLogger->log(LogLevel::ERROR, 'This is a test for the ERROR logger');
+        $this->hostNameLogger->log(LogLevel::DEBUG, 'This is a test for the hostname logger');
+        $this->appNameLogger->log(LogLevel::DEBUG, 'This is a test for the appname logger');
 
-        $this->assertTrue(file_exists($this->errLogger->getLogFilePath()));
         $this->assertTrue(file_exists($this->logger->getLogFilePath()));
+        $this->assertTrue(file_exists($this->errLogger->getLogFilePath()));
+        $this->assertTrue(file_exists($this->hostNameLogger->getLogFilePath()));
+        $this->assertTrue(file_exists($this->appNameLogger->getLogFilePath()));
 
         $this->assertLastLineEquals($this->logger);
         $this->assertLastLineEquals($this->errLogger);
+        $this->assertLastLineEquals($this->hostNameLogger);
+        $this->assertLastLineEquals($this->appNameLogger);
     }
-
 
     public function assertLastLineEquals(Logger $logr)
     {
