@@ -20,7 +20,7 @@ use Psr\Log\LogLevel;
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
  * @since   July 26, 2008
  * @link    https://github.com/katzgrau/KLogger
- * @version 0.2.0
+ * @version 1.0.0
  */
 
 /**
