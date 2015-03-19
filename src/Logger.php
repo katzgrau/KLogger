@@ -164,7 +164,7 @@ class Logger extends AbstractLogger
     /**
      * Sets the Log Level Threshold
      * 
-     * @param string $logLevelThreshold Valid format string for date()
+     * @param string $logLevelThreshold The log level threshold
      */
     public function setLogLevelThreshold($logLevelThreshold)
     {
