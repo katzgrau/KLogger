@@ -113,7 +113,7 @@ class Logger extends AbstractLogger
         $this->options = array_merge($this->options, $options);
 
         $logDirectory = rtrim($logDirectory, '\\/');
-        if (! file_exists($logDirectory)) {
+        if ( ! file_exists($logDirectory)) {
             mkdir($logDirectory, $this->defaultPermissions, true);
         }
 
