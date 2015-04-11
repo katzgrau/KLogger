@@ -118,7 +118,7 @@ class Logger extends AbstractLogger
         }
 
         if($logDirectory === "php://stdout" || $logDirectory === "php://output") {
-            $this->logFilePath = $logDirectory;
+            $this->setLogToStdOut($logDirectory);
             $this->setFileHandle('w+');
         } else {
             if ($this->options['filename']) {
@@ -139,6 +139,13 @@ class Logger extends AbstractLogger
         if ( ! $this->fileHandle) {
             throw new RuntimeException('The file could not be opened. Check permissions.');
         }
+    }
+
+    /**
+     * @param string $stdOutPath
+     */
+    public function setLogToStdOut($stdOutPath) {
+        $this->logFilePath = $stdOutPath;
     }
 
     /**
