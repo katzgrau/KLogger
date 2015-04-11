@@ -126,9 +126,6 @@ class Logger extends AbstractLogger
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             }
             $this->setFileHandle('a');
-            if(!$this->fileHandle) {
-                throw new RuntimeException('The file could not be opened. Check permissions.');
-            }
         }
 
         if ( ! $this->fileHandle) {
