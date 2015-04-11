@@ -119,7 +119,7 @@ class Logger extends AbstractLogger
 
         if($logDirectory === "php://stdout" || $logDirectory === "php://output") {
             $this->logFilePath = $logDirectory;
-            $this->fileHandle  = fopen($this->logFilePath, 'w+');
+            $this->setFileHandle('w+');
         } else {
             if ($this->options['filename']) {
                 $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'];
@@ -130,7 +130,7 @@ class Logger extends AbstractLogger
             if(file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             }
-            $this->fileHandle = fopen($this->logFilePath, 'a');
+            $this->setFileHandle('a');
             if(!$this->fileHandle) {
                 throw new RuntimeException('The file could not be opened. Check permissions.');
             }
@@ -140,6 +140,16 @@ class Logger extends AbstractLogger
             throw new RuntimeException('The file could not be opened. Check permissions.');
         }
     }
+
+    /**
+     * @param $writeMode
+     *
+     * @internal param resource $fileHandle
+     */
+    public function setFileHandle($writeMode) {
+        $this->fileHandle = fopen($this->logFilePath, $writeMode);
+    }
+
 
     /**
      * Class destructor
