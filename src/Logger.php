@@ -112,7 +112,7 @@ class Logger extends AbstractLogger
         $this->logLevelThreshold = $logLevelThreshold;
         $this->options = array_merge($this->options, $options);
 
-        $logDirectory = rtrim($logDirectory, '\\/');
+        $logDirectory = rtrim($logDirectory, DIRECTORY_SEPARATOR);
         if ( ! file_exists($logDirectory)) {
             mkdir($logDirectory, $this->defaultPermissions, true);
         }
