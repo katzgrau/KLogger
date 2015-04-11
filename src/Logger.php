@@ -121,12 +121,7 @@ class Logger extends AbstractLogger
             $this->setLogToStdOut($logDirectory);
             $this->setFileHandle('w+');
         } else {
-            if ($this->options['filename']) {
-                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'];
-            } else {
-                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
-            }
-
+            $this->setLogFilePath($logDirectory);
             if(file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             }
@@ -146,6 +141,22 @@ class Logger extends AbstractLogger
      */
     public function setLogToStdOut($stdOutPath) {
         $this->logFilePath = $stdOutPath;
+    }
+
+    /**
+     * @param string $logDirectory
+     */
+    public function setLogFilePath($logDirectory) {
+        if ($this->options['filename']) {
+            if (strpos($this->options['filename'], '.log') !== false || strpos($this->options['filename'], '.txt') !== false) {
+                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'];
+            }
+            else {
+                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'].'.'.$this->options['extension'];
+            }
+        } else {
+            $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
+        }
     }
 
     /**
