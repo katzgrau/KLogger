@@ -18,7 +18,7 @@ If you need a logger that supports PHP < 5.3, see [past releases](https://github
 From the Command Line:
 
 ```
-composer require katzgrau/klogger:1.0.*
+composer require katzgrau/klogger:dev-master
 ```
 
 In your `composer.json`:
@@ -26,7 +26,7 @@ In your `composer.json`:
 ``` json
 {
     "require": {
-        "katzgrau/klogger": "1.0.*"
+        "katzgrau/klogger": "dev-master"
     }
 }
 ```
