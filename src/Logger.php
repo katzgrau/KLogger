@@ -112,34 +112,59 @@ class Logger extends AbstractLogger
         $this->logLevelThreshold = $logLevelThreshold;
         $this->options = array_merge($this->options, $options);
 
-        $logDirectory = rtrim($logDirectory, '\\/');
-        if (! file_exists($logDirectory)) {
+        $logDirectory = rtrim($logDirectory, DIRECTORY_SEPARATOR);
+        if ( ! file_exists($logDirectory)) {
             mkdir($logDirectory, $this->defaultPermissions, true);
         }
 
         if($logDirectory === "php://stdout" || $logDirectory === "php://output") {
-            $this->logFilePath = $logDirectory;
-            $this->fileHandle  = fopen($this->logFilePath, 'w+');
+            $this->setLogToStdOut($logDirectory);
+            $this->setFileHandle('w+');
         } else {
-            if ($this->options['filename']) {
-                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'];
-            } else {
-                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
-            }
-
+            $this->setLogFilePath($logDirectory);
             if(file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             }
-            $this->fileHandle = fopen($this->logFilePath, 'a');
-            if(!$this->fileHandle) {
-                throw new RuntimeException('The file could not be opened. Check permissions.');
-            }
+            $this->setFileHandle('a');
         }
 
         if ( ! $this->fileHandle) {
             throw new RuntimeException('The file could not be opened. Check permissions.');
         }
     }
+
+    /**
+     * @param string $stdOutPath
+     */
+    public function setLogToStdOut($stdOutPath) {
+        $this->logFilePath = $stdOutPath;
+    }
+
+    /**
+     * @param string $logDirectory
+     */
+    public function setLogFilePath($logDirectory) {
+        if ($this->options['filename']) {
+            if (strpos($this->options['filename'], '.log') !== false || strpos($this->options['filename'], '.txt') !== false) {
+                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'];
+            }
+            else {
+                $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'].'.'.$this->options['extension'];
+            }
+        } else {
+            $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
+        }
+    }
+
+    /**
+     * @param $writeMode
+     *
+     * @internal param resource $fileHandle
+     */
+    public function setFileHandle($writeMode) {
+        $this->fileHandle = fopen($this->logFilePath, $writeMode);
+    }
+
 
     /**
      * Class destructor
