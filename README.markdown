@@ -159,8 +159,9 @@ Additionally, it's been used in numerous projects, both commercial and personal.
 Special thanks to all contributors:
 
 * [Dan Horrigan](http://twitter.com/dhrrgn)
-* [Tim Kinnane](http://twitter.com/etherealtim)
 * [Brian Fenton](http://github.com/fentie)
+* [Tim Kinnane](http://twitter.com/etherealtim)
+* [Onno Vos](https://github.com/onno-vos-dev)
 * [Cameron Will](https://github.com/cwill747)
 
 ## License
