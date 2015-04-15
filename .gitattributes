@@ -1,0 +1,5 @@
+# Files and directories with the attribute export-ignore won’t be added to archive files.
+tests/ export-ignore
+
+# Perform LF normalization for text files.
+* text=auto
