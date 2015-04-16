@@ -38,11 +38,13 @@ class Logger extends AbstractLogger
      * @var array
      */
     private $options = array (
-        'extension' => 'txt',
-        'dateFormat' => 'Y-m-d G:i:s.u',
-        'filename' => false,
+        'extension'      => 'txt',
+        'dateFormat'     => 'Y-m-d G:i:s.u',
+        'filename'       => false,
         'flushFrequency' => false,
-        'prefix' => 'log_'
+        'prefix'         => 'log_',
+        'logFormat'      => false,
+        'appendContext'  => true,
     );
 
     /**
@@ -178,7 +180,7 @@ class Logger extends AbstractLogger
 
     /**
      * Sets the date format used by all instances of KLogger
-     * 
+     *
      * @param string $dateFormat Valid format string for date()
      */
     public function setDateFormat($dateFormat)
@@ -188,7 +190,7 @@ class Logger extends AbstractLogger
 
     /**
      * Sets the Log Level Threshold
-     * 
+     *
      * @param string $logLevelThreshold The log level threshold
      */
     public function setLogLevelThreshold($logLevelThreshold)
@@ -209,7 +211,7 @@ class Logger extends AbstractLogger
         if ($this->logLevels[$this->logLevelThreshold] < $this->logLevels[$level]) {
             return;
         }
-        $message = $this->formatMessage($level, $message, $context);        
+        $message = $this->formatMessage($level, $message, $context);
         $this->write($message);
     }
 
@@ -265,19 +267,36 @@ class Logger extends AbstractLogger
      */
     private function formatMessage($level, $message, $context)
     {
-        $level = strtoupper($level);
-        if (! empty($context)) {
+        if ($this->options['logFormat']) {
+            $parts = [
+                'date'    => $this->getTimestamp(),
+                'level'   => strtoupper($level),
+                'message' => $message,
+                'context' => json_encode($context),
+            ];
+            $message = $this->options['logFormat'];
+            foreach ($parts as $part => $value) {
+                $message = str_replace('{'.$part.'}', $value, $message);
+            }
+
+        } else {
+            $message = "[{$this->getTimestamp()}] [{$level}] {$message}";
+        }
+
+        if ($this->options['appendContext'] && ! empty($context)) {
             $message .= PHP_EOL.$this->indent($this->contextToString($context));
         }
-        return "[{$this->getTimestamp()}] [{$level}] {$message}".PHP_EOL;
+
+        return $message.PHP_EOL;
+
     }
 
     /**
      * Gets the correctly formatted Date/Time for the log entry.
-     * 
+     *
      * PHP DateTime is dump, and you have to resort to trickery to get microseconds
      * to work correctly, so here it is.
-     * 
+     *
      * @return string
      */
     private function getTimestamp()
@@ -291,7 +310,7 @@ class Logger extends AbstractLogger
 
     /**
      * Takes the given context and coverts it to a string.
-     * 
+     *
      * @param  array $context The Context
      * @return string
      */
@@ -316,7 +335,7 @@ class Logger extends AbstractLogger
 
     /**
      * Indents the given string with the given indent.
-     * 
+     *
      * @param  string $string The string to indent
      * @param  string $indent What to use as the indent.
      * @return string
