@@ -268,12 +268,12 @@ class Logger extends AbstractLogger
     private function formatMessage($level, $message, $context)
     {
         if ($this->options['logFormat']) {
-            $parts = [
+            $parts = array(
                 'date'    => $this->getTimestamp(),
                 'level'   => strtoupper($level),
                 'message' => $message,
                 'context' => json_encode($context),
-            ];
+            );
             $message = $this->options['logFormat'];
             foreach ($parts as $part => $value) {
                 $message = str_replace('{'.$part.'}', $value, $message);
