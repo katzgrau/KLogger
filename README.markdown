@@ -148,6 +148,7 @@ When a string is provided, it will be parsed for variables wrapped in braces (`{
 | --------- | ----------- |
 | date | Current date (uses `dateFormat` option) |
 | level | The PSR log level |
+| priority | Integer value for log level (see `$logLevels`) |
 | message | The message being logged |
 | context | JSON-encoded context |
 
