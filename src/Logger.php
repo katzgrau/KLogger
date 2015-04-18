@@ -100,6 +100,11 @@ class Logger extends AbstractLogger
     private $defaultPermissions = 0777;
 
     /**
+     * @var array Callback queue
+     */
+    private $callbacks = array();
+
+    /**
      * Class constructor
      *
      * @param string $logDirectory      File path to the logging directory
@@ -211,8 +216,19 @@ class Logger extends AbstractLogger
         if ($this->logLevels[$this->logLevelThreshold] < $this->logLevels[$level]) {
             return;
         }
-        $message = $this->formatMessage($level, $message, $context);
-        $this->write($message);
+        $log = $this->formatMessage($level, $message, $context);
+        $this->write($log);
+
+        $this->callCallbacks(array(
+            'priority'  => $this->logLevels[$level],
+            'level'     => $level,
+            'message'   => $message,
+            'context'   => $context,
+            'log'       => $log,
+            'threshold' => $this->logLevelThreshold,
+            'file'      => $this->logFilePath,
+            'options'   => $this->options,
+        ));
     }
 
     /**
@@ -345,4 +361,20 @@ class Logger extends AbstractLogger
     {
         return $indent.str_replace("\n", "\n".$indent, $string);
     }
+
+    /**
+     * Adds a callable to the callback queue
+     *
+     * @param callable $callback Callable to be added to the queue
+     */
+    public function callback($callable) {
+        $this->callbacks[] = $callable;
+    }
+
+    private function callCallbacks($log) {
+        foreach ($this->callbacks as $callback) {
+            call_user_func($callback, $log);
+        }
+    }
+
 }
