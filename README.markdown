@@ -4,10 +4,9 @@ A project written by [Kenny Katzgrau](http://twitter.com/katzgrau) and [Dan Horr
 
 ## About
 
-KLogger is an easy-to-use [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
-compliant logging class for PHP. It isn't naive about
-file permissions (which is expected). It was meant to be a class that you could
-quickly include into a project and have working right away.
+KLogger is an easy-to-use [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md) compliant logging class for PHP.
+
+It isn't naive about file permissions (which is expected). It was meant to be a class that you could quickly include into a project and have working right away.
 
 If you need a logger that supports PHP < 5.3, see [past releases](https://github.com/katzgrau/KLogger/releases) for KLogger versions < 1.0.0.
 
@@ -179,6 +178,25 @@ $logFormat = json_encode([
 The output will look like:
 
     {"datetime":"2015-04-16 10:28:41.186728","logLevel":"INFO","message":"Message content","context":"{"1":"foo","2":"bar"}"}
+
+## Callbacks
+
+Callbacks are added with the `callback()` method and are run after logging. Treat the `callback()` method as you would [call_user_func()](https://php.net/manual/function.call-user-func.php).
+
+All callbacks are passed the parameter `$log` which is an array of information about the logger object and the current log line.
+
+Basic example with a closure:
+
+```
+$logger->callback(function ($log) {
+    Email::send('you@gmail.com', $log['level'], $log['message']);
+});
+$logger->info('Returned a million search results');
+```
+
+Note that you would have to write the implementation for the `Email` class for the example above to work, but it demonstrates how easy it is to register a callback.
+
+Note also that calling the `write()` method directly will not trigger callbacks, so the [PSR-3 methods](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#3-psrlogloggerinterface)  are recommended.
 
 ## Why use KLogger?
 
