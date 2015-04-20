@@ -228,6 +228,7 @@ class Logger extends AbstractLogger
             'threshold' => $this->logLevelThreshold,
             'file'      => $this->logFilePath,
             'options'   => $this->options,
+            'logger'    => $this,
         ));
     }
 
