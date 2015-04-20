@@ -181,22 +181,34 @@ The output will look like:
 
 ## Callbacks
 
-Callbacks are added with the `callback()` method and are run after logging. Treat the `callback()` method as you would [call_user_func()](https://php.net/manual/function.call-user-func.php).
+Callbacks run when an item is logged and you can register them with the `callback()` method which accepts 2 parameters: a [callable](https://php.net/manual/language.types.callable.php) and an optional parameter of any datatype for anything else you want to pass to the callback.
 
-All callbacks are passed the parameter `$log` which is an array of information about the logger object and the current log line.
-
-Basic example with a closure:
+This basic example will send an email if the level is `notice` or above:
 
 ```
-$logger->callback(function ($log) {
-    Email::send('you@gmail.com', $log['level'], $log['message']);
-});
-$logger->info('Returned a million search results');
+function notify($log, $email) {
+    if ($log['priority'] < 6) {
+        mail(
+            $email,
+            $log['level'],
+            $log['message']
+        );
+    }
+}
+$logger->callback('notify', 'you@email.com');
 ```
 
-Note that you would have to write the implementation for the `Email` class for the example above to work, but it demonstrates how easy it is to register a callback.
+The `$log` parameter contains:
 
-Note also that calling the `write()` method directly will not trigger callbacks, so the [PSR-3 methods](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#3-psrlogloggerinterface)  are recommended.
+ - `priority`: Integer "value" of `level` (`0` = `emergency`, `7` = `debug`)
+ - `level`: Log level string
+ - `message`: Message being logged
+ - `context`: Variable passed as second parameter to logging function
+ - `log`: Full log line (formatted as per `logFormat` option)
+ - `threshold`: Minimum log level that is recorded
+ - `file`: Full path to current log file
+ - `options`: Array of KLogger object options
+ - `logger`: The current KLogger instance
 
 ## Why use KLogger?
 
