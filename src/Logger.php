@@ -368,8 +368,11 @@ class Logger extends AbstractLogger
      *
      * @param callable $callback Callable to be added to the queue
      */
-    public function callback($callable) {
-        $this->callbacks[] = $callable;
+    public function callback($callable, $params = null) {
+        $this->callbacks[] = array(
+            'callable' => $callable,
+            'params'   => $params,
+        );
     }
 
     /**
@@ -379,7 +382,7 @@ class Logger extends AbstractLogger
      */
     private function callCallbacks($log) {
         foreach ($this->callbacks as $callback) {
-            call_user_func($callback, $log);
+            call_user_func($callback['callable'], $log, $callback['params']);
         }
     }
 
