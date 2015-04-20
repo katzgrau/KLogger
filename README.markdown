@@ -154,19 +154,23 @@ When a string is provided, it will be parsed for variables wrapped in braces (`{
 
 Same as default format but separates parts with tabs rather than spaces:
 
-    $logFormat = "[{date}]\t[{level}]\t{message}";
+```php
+$logFormat = "[{date}]\t[{level}]\t{message}";
+```
 
 #### Custom variables and static text
 
 Inject custom content into log messages:
 
-    $logFormat = "[{date}] [$var] StaticText {message}";
+```php
+$logFormat = "[{date}] [$var] StaticText {message}";
+```
 
 #### JSON
 
 To output pure JSON, set `appendContext` to `false` and provide something like the below as the value of the `logFormat` option:
 
-```
+```php
 $logFormat = json_encode([
     'datetime' => '{date}',
     'logLevel' => '{level}',
@@ -185,7 +189,7 @@ Callbacks run when an item is logged and you can register them with the `callbac
 
 This basic example will send an email if the level is `notice` or above:
 
-```
+```php
 function notify($log, $email) {
     if ($log['priority'] < 6) {
         mail(
