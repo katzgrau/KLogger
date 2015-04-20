@@ -371,6 +371,11 @@ class Logger extends AbstractLogger
         $this->callbacks[] = $callable;
     }
 
+    /**
+     * Runs each callback, passing pre-constructed array
+     *
+     * @param array $log Log details
+     */
     private function callCallbacks($log) {
         foreach ($this->callbacks as $callback) {
             call_user_func($callback, $log);
