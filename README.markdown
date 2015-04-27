@@ -135,7 +135,51 @@ Here's the full list:
 | filename | [prefix][date].[extension] | Set the filename for the log file. **This overrides the prefix and extention options.** |
 | flushFrequency | `false` (disabled) | How many lines to flush the output buffer after |
 | prefix  | 'log_' | The log file prefix |
+| logFormat | `false` | Format of log entries |
+| appendContext | `true` | When `false`, don't append context to log entries |
 
+### Log Formatting
+
+The `logFormat` option lets you define what each line should look like and can contain parameters representing the date, message, etc.
+
+When a string is provided, it will be parsed for variables wrapped in braces (`{` and `}`) and replace them with the appropriate value:
+
+| Parameter | Description |
+| --------- | ----------- |
+| date | Current date (uses `dateFormat` option) |
+| level | The PSR log level |
+| priority | Integer value for log level (see `$logLevels`) |
+| message | The message being logged |
+| context | JSON-encoded context |
+
+#### Tab-separated
+
+Same as default format but separates parts with tabs rather than spaces:
+
+    $logFormat = "[{date}]\t[{level}]\t{message}";
+
+#### Custom variables and static text
+
+Inject custom content into log messages:
+
+    $logFormat = "[{date}] [$var] StaticText {message}";
+
+#### JSON
+
+To output pure JSON, set `appendContext` to `false` and provide something like the below as the value of the `logFormat` option:
+
+```
+$logFormat = json_encode([
+    'datetime' => '{date}',
+    'logLevel' => '{level}',
+    'message'  => '{message}',
+    'context'  => '{context}',
+]);
+```
+
+The output will look like:
+
+    {"datetime":"2015-04-16 10:28:41.186728","logLevel":"INFO","message":"Message content","context":"{"1":"foo","2":"bar"}"}
 
 ## Why use KLogger?
 
