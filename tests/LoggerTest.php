@@ -13,11 +13,11 @@ class LoggerTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->logPath = __DIR__.'/logs';
-        $this->logger = new Logger($this->logPath, LogLevel::DEBUG, array ('flushFrequency' => 1));
-        $this->errLogger = new Logger($this->logPath, LogLevel::ERROR, array (
+        $this->logger = new Logger($this->logPath, LogLevel::DEBUG, array('flushFrequency' => 1));
+        $this->errLogger = new Logger($this->logPath, LogLevel::ERROR, array(
             'extension' => 'log',
             'prefix' => 'error_',
-            'flushFrequency' => 1
+            'flushFrequency' => 1,
         ));
     }
 
@@ -49,7 +49,6 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $this->assertLastLineEquals($this->errLogger);
     }
 
-
     public function assertLastLineEquals(Logger $logr)
     {
         $this->assertEquals($logr->getLastLogLine(), $this->getLastLine($logr->getLogFilePath()));
@@ -78,7 +77,8 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         return trim($t);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         #@unlink($this->logger->getLogFilePath());
         #@unlink($this->errLogger->getLogFilePath());
     }
