@@ -108,6 +108,8 @@ class Logger extends AbstractLogger
      *
      * @internal param string $logFilePrefix The prefix for the log file name
      * @internal param string $logFileExt The extension for the log file
+     *
+     * @throws RuntimeException
      */
     public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG, array $options = array())
     {
@@ -220,6 +222,8 @@ class Logger extends AbstractLogger
      *
      * @param string $message Line to write to the log
      * @return void
+     *
+     * @throws RuntimeException
      */
     public function write($message)
     {
