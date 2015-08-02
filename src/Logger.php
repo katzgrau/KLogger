@@ -147,7 +147,7 @@ class Logger extends AbstractLogger
      */
     public function setLogFilePath($logDirectory) {
         if ($this->options['filename']) {
-            if (strpos($this->options['fi`lename'], '.log') !== false || strpos($this->options['filename'], '.txt') !== false) {
+            if (strpos($this->options['filename'], '.log') !== false || strpos($this->options['filename'], '.txt') !== false) {
                 $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'];
             }
             else {
