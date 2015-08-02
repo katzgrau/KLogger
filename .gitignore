@@ -2,3 +2,4 @@
 /tests/logs/*.log
 /vendor/
 composer.lock
+/.idea/
