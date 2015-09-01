@@ -269,11 +269,12 @@ class Logger extends AbstractLogger
     {
         if ($this->options['logFormat']) {
             $parts = array(
-                'date'     => $this->getTimestamp(),
-                'level'    => strtoupper($level),
-                'priority' => $this->logLevels[$level],
-                'message'  => $message,
-                'context'  => json_encode($context),
+                'date'          => $this->getTimestamp(),
+                'level'         => strtoupper($level),
+                'level-padding' => str_repeat(' ', 9 - strlen($level)),
+                'priority'      => $this->logLevels[$level],
+                'message'       => $message,
+                'context'       => json_encode($context),
             );
             $message = $this->options['logFormat'];
             foreach ($parts as $part => $value) {

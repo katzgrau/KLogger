@@ -148,6 +148,7 @@ When a string is provided, it will be parsed for variables wrapped in braces (`{
 | --------- | ----------- |
 | date | Current date (uses `dateFormat` option) |
 | level | The PSR log level |
+| level-padding | The whitespace needed to make this log level line up visually with other log levels in the log file |
 | priority | Integer value for log level (see `$logLevels`) |
 | message | The message being logged |
 | context | JSON-encoded context |
@@ -180,6 +181,16 @@ $logFormat = json_encode([
 The output will look like:
 
     {"datetime":"2015-04-16 10:28:41.186728","logLevel":"INFO","message":"Message content","context":"{"1":"foo","2":"bar"}"}
+    
+#### Pretty Formatting with Level Padding
+
+For the obsessive compulsive
+
+    $logFormat = "[{date}] [{level}]{level-padding} {message}";
+
+... or ...
+
+    $logFormat = "[{date}] [{level}{level-padding}] {message}";
 
 ## Why use KLogger?
 
