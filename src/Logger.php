@@ -119,7 +119,7 @@ class Logger extends AbstractLogger
             mkdir($logDirectory, $this->defaultPermissions, true);
         }
 
-        if($logDirectory === "php://stdout" || $logDirectory === "php://output") {
+        if(strpos($logDirectory, 'php://') === 0) {
             $this->setLogToStdOut($logDirectory);
             $this->setFileHandle('w+');
         } else {
