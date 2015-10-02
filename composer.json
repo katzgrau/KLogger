@@ -1,7 +1,7 @@
 {
-    "name": "tesladethray/klogger",
+    "name": "katzgrau/klogger",
     "version": "dev-master",
-    "description": "A (tweaked) Simple Logging Class",
+    "description": "A Simple Logging Class",
     "keywords": ["logging"],
     "require": {
         "php": ">=5.3",
