@@ -37,7 +37,7 @@ class Logger extends AbstractLogger
      *
      * @var array
      */
-    private $options = array (
+    protected $options = array (
         'extension'      => 'txt',
         'dateFormat'     => 'Y-m-d G:i:s.u',
         'filename'       => false,
@@ -57,7 +57,7 @@ class Logger extends AbstractLogger
      * Current minimum logging threshold
      * @var integer
      */
-    private $logLevelThreshold = LogLevel::DEBUG;
+    protected $logLevelThreshold = LogLevel::DEBUG;
 
     /**
      * The number of lines logged in this instance's lifetime
@@ -69,7 +69,7 @@ class Logger extends AbstractLogger
      * Log Levels
      * @var array
      */
-    private $logLevels = array(
+    protected $logLevels = array(
         LogLevel::EMERGENCY => 0,
         LogLevel::ALERT     => 1,
         LogLevel::CRITICAL  => 2,
@@ -265,7 +265,7 @@ class Logger extends AbstractLogger
      * @param  array  $context The context
      * @return string
      */
-    private function formatMessage($level, $message, $context)
+    protected function formatMessage($level, $message, $context)
     {
         if ($this->options['logFormat']) {
             $parts = array(
@@ -316,7 +316,7 @@ class Logger extends AbstractLogger
      * @param  array $context The Context
      * @return string
      */
-    private function contextToString($context)
+    protected function contextToString($context)
     {
         $export = '';
         foreach ($context as $key => $value) {
@@ -342,7 +342,7 @@ class Logger extends AbstractLogger
      * @param  string $indent What to use as the indent.
      * @return string
      */
-    private function indent($string, $indent = '    ')
+    protected function indent($string, $indent = '    ')
     {
         return $indent.str_replace("\n", "\n".$indent, $string);
     }
