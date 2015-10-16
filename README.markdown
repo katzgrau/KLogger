@@ -149,6 +149,7 @@ When a string is provided, it will be parsed for variables wrapped in braces (`{
 | date | Current date (uses `dateFormat` option) |
 | level | The PSR log level |
 | level-padding | The whitespace needed to make this log level line up visually with other log levels in the log file |
+| padding-level | The PSR log level with left-padding |
 | priority | Integer value for log level (see `$logLevels`) |
 | message | The message being logged |
 | context | JSON-encoded context |
