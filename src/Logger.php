@@ -51,7 +51,7 @@ class Logger extends AbstractLogger
      * Path to the log file
      * @var string
      */
-    private $logFilePath;
+    protected $logFilePath;
 
     /**
      * Current minimum logging threshold
@@ -63,7 +63,7 @@ class Logger extends AbstractLogger
      * The number of lines logged in this instance's lifetime
      * @var int
      */
-    private $logLineCount = 0;
+    protected $logLineCount = 0;
 
     /**
      * Log Levels
@@ -84,20 +84,20 @@ class Logger extends AbstractLogger
      * This holds the file handle for this instance's log file
      * @var resource
      */
-    private $fileHandle;
+    protected $fileHandle;
 
     /**
      * This holds the last line logged to the logger
      *  Used for unit tests
      * @var string
      */
-    private $lastLine = '';
+    protected $lastLine = '';
 
     /**
      * Octal notation for default permissions of the log file
      * @var integer
      */
-    private $defaultPermissions = 0777;
+    protected $defaultPermissions = 0777;
 
     /**
      * Class constructor
@@ -301,7 +301,7 @@ class Logger extends AbstractLogger
      *
      * @return string
      */
-    private function getTimestamp()
+    protected function getTimestamp()
     {
         $originalTime = microtime(true);
         $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
