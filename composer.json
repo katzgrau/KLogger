@@ -5,7 +5,7 @@
     "keywords": ["logging"],
     "require": {
         "php": ">=5.3",
-        "psr/log": "1.0.0"
+        "psr/log": "^1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*"
