@@ -4,10 +4,9 @@ A project written by [Kenny Katzgrau](http://twitter.com/katzgrau) and [Dan Horr
 
 ## About
 
-KLogger is an easy-to-use [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
-compliant logging class for PHP. It isn't naive about
-file permissions (which is expected). It was meant to be a class that you could
-quickly include into a project and have working right away.
+KLogger is an easy-to-use [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md) compliant logging class for PHP.
+
+It isn't naive about file permissions (which is expected). It was meant to be a class that you could quickly include into a project and have working right away.
 
 If you need a logger that supports PHP < 5.3, see [past releases](https://github.com/katzgrau/KLogger/releases) for KLogger versions < 1.0.0.
 
@@ -157,19 +156,23 @@ When a string is provided, it will be parsed for variables wrapped in braces (`{
 
 Same as default format but separates parts with tabs rather than spaces:
 
-    $logFormat = "[{date}]\t[{level}]\t{message}";
+```php
+$logFormat = "[{date}]\t[{level}]\t{message}";
+```
 
 #### Custom variables and static text
 
 Inject custom content into log messages:
 
-    $logFormat = "[{date}] [$var] StaticText {message}";
+```php
+$logFormat = "[{date}] [$var] StaticText {message}";
+```
 
 #### JSON
 
 To output pure JSON, set `appendContext` to `false` and provide something like the below as the value of the `logFormat` option:
 
-```
+```php
 $logFormat = json_encode([
     'datetime' => '{date}',
     'logLevel' => '{level}',
@@ -191,6 +194,37 @@ For the obsessive compulsive
 ... or ...
 
     $logFormat = "[{date}] [{level}{level-padding}] {message}";
+
+## Callbacks
+
+Callbacks run when an item is logged and you can register them with the `callback()` method which accepts 2 parameters: a [callable](https://php.net/manual/language.types.callable.php) and an optional parameter of any datatype for anything else you want to pass to the callback.
+
+This basic example will send an email if the level is `notice` or above:
+
+```php
+function notify($log, $email) {
+    if ($log['priority'] < 6) {
+        mail(
+            $email,
+            $log['level'],
+            $log['message']
+        );
+    }
+}
+$logger->callback('notify', 'you@email.com');
+```
+
+The `$log` parameter contains:
+
+ - `priority`: Integer "value" of `level` (`0` = `emergency`, `7` = `debug`)
+ - `level`: Log level string
+ - `message`: Message being logged
+ - `context`: Variable passed as second parameter to logging function
+ - `log`: Full log line (formatted as per `logFormat` option)
+ - `threshold`: Minimum log level that is recorded
+ - `file`: Full path to current log file
+ - `options`: Array of KLogger object options
+ - `logger`: The current KLogger instance
 
 ## Why use KLogger?
 
