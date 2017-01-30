@@ -272,6 +272,7 @@ class Logger extends AbstractLogger
                 'date'          => $this->getTimestamp(),
                 'level'         => strtoupper($level),
                 'level-padding' => str_repeat(' ', 9 - strlen($level)),
+                'padding-level' => str_pad($level, 9, ' ', STR_PAD_LEFT),
                 'priority'      => $this->logLevels[$level],
                 'message'       => $message,
                 'context'       => json_encode($context),
