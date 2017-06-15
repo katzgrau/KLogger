@@ -71,7 +71,8 @@ class LoggerTest extends PHPUnit_Framework_TestCase
             fseek($fp, $pos, SEEK_END);
             $t = fgetc($fp);
             $pos = $pos - 1;
-            if ($size + $pos < 1) {
+            if ($size + $pos < -1) {
+                rewind($fp);
                 break;
             }
         }
