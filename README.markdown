@@ -206,6 +206,8 @@ Klogger has been used in projects at:
     * The University of Laverne
     * The New Jersey Institute of Technology
     * Middlesex Hospital in NJ
+    * Hannover Medical School (GER)
+    * Technical University of Braunschweig (GER)
 
 Additionally, it's been used in numerous projects, both commercial and personal.
 
