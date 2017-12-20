@@ -154,7 +154,7 @@ class Logger extends AbstractLogger
                 $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['filename'].'.'.$this->options['extension'];
             }
         } else {
-            $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
+            $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].$this->date().'.'.$this->options['extension'];
         }
     }
 
@@ -303,10 +303,10 @@ class Logger extends AbstractLogger
      */
     private function getTimestamp()
     {
-        $originalTime = microtime(true);
-        $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
-        $date = new DateTime(date('Y-m-d H:i:s.'.$micro, $originalTime));
-
+        list($micro, $originalTime) = explode(" ", microtime());
+        $micro = sprintf("%06d", $micro * 1000000);
+        $tempDate = new \DateTime("@".$originalTime);
+        $date = new \DateTime($tempDate->format('Y-m-d H:i:s.'.$micro));
         return $date->format($this->options['dateFormat']);
     }
 
@@ -345,5 +345,15 @@ class Logger extends AbstractLogger
     protected function indent($string, $indent = '    ')
     {
         return $indent.str_replace("\n", "\n".$indent, $string);
+    }
+
+    /**
+     * @param string $format The format in which the date is to be outputed
+     * @param $timeString The timestring to be used with DateTime, if not provided DateTime falls back on "now"
+     * @return string
+     */
+    private function date($timeString = "now", $format = 'Y-m-d'){
+        $dateTime = new \DateTime($timeString);
+        return $dateTime->format($format);
     }
 }

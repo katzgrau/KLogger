@@ -3,3 +3,4 @@
 basic-test.php
 /vendor/
 composer.lock
+/.idea/
