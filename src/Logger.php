@@ -81,12 +81,6 @@ class Logger extends AbstractLogger
     );
 
     /**
-     * This holds the file handle for this instance's log file
-     * @var resource
-     */
-    private $fileHandle;
-
-    /**
      * This holds the last line logged to the logger
      *  Used for unit tests
      * @var string
@@ -121,17 +115,11 @@ class Logger extends AbstractLogger
 
         if(strpos($logDirectory, 'php://') === 0) {
             $this->setLogToStdOut($logDirectory);
-            $this->setFileHandle('w+');
         } else {
             $this->setLogFilePath($logDirectory);
             if(file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             }
-            $this->setFileHandle('a');
-        }
-
-        if ( ! $this->fileHandle) {
-            throw new RuntimeException('The file could not be opened. Check permissions.');
         }
     }
 
@@ -155,26 +143,6 @@ class Logger extends AbstractLogger
             }
         } else {
             $this->logFilePath = $logDirectory.DIRECTORY_SEPARATOR.$this->options['prefix'].date('Y-m-d').'.'.$this->options['extension'];
-        }
-    }
-
-    /**
-     * @param $writeMode
-     *
-     * @internal param resource $fileHandle
-     */
-    public function setFileHandle($writeMode) {
-        $this->fileHandle = fopen($this->logFilePath, $writeMode);
-    }
-
-
-    /**
-     * Class destructor
-     */
-    public function __destruct()
-    {
-        if ($this->fileHandle) {
-            fclose($this->fileHandle);
         }
     }
 
@@ -223,17 +191,11 @@ class Logger extends AbstractLogger
      */
     public function write($message)
     {
-        if (null !== $this->fileHandle) {
-            if (fwrite($this->fileHandle, $message) === false) {
-                throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
-            } else {
-                $this->lastLine = trim($message);
-                $this->logLineCount++;
-
-                if ($this->options['flushFrequency'] && $this->logLineCount % $this->options['flushFrequency'] === 0) {
-                    fflush($this->fileHandle);
-                }
-            }
+        if (file_put_contents($this->getLogFilePath(), $message, FILE_APPEND) === false) {
+            throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
+        } else {
+            $this->lastLine = trim($message);
+            $this->logLineCount++;
         }
     }
 
