@@ -15,7 +15,7 @@ use Psr\Log\LogLevel;
  * $log = new Katzgrau\KLogger\Logger('/var/log/', Psr\Log\LogLevel::INFO);
  * $log->info('Returned a million search results'); //Prints to the log file
  * $log->error('Oh dear.'); //Prints to the log file
- * $log->debug('x = 5'); //Prints nothing due to current severity threshhold
+ * $log->debug('x = 5'); //Prints nothing due to current severity threshold
  *
  * @author  Kenny Katzgrau <katzgrau@gmail.com>
  * @since   July 26, 2008
