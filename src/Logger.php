@@ -124,6 +124,10 @@ class Logger extends AbstractLogger
             $this->setFileHandle('w+');
         } else {
             $this->setLogFilePath($logDirectory);
+            if(!file_exists($this->logFilePath) || !is_writable($this->logFilePath)) {
+            	touch($this->logFilePath);
+            	chmod($this->logFilePath, $this->defaultPermissions);
+            }
             if(file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
                 throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
             }
