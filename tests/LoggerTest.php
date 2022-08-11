@@ -10,7 +10,7 @@ class LoggerTest extends PHPUnit\Framework\TestCase
     private $logger;
     private $errLogger;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->logPath = __DIR__.'/logs';
         $this->logger = new Logger($this->logPath, LogLevel::DEBUG, array ('flushFrequency' => 1));
@@ -83,7 +83,7 @@ class LoggerTest extends PHPUnit\Framework\TestCase
         return trim($t);
     }
 
-    public function tearDown() {
+    public function tearDown(): void {
         #@unlink($this->logger->getLogFilePath());
         #@unlink($this->errLogger->getLogFilePath());
     }
